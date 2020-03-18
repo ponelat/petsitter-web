@@ -1,19 +1,35 @@
 import React, { Component } from 'react'
-import { Box, Heading } from 'grommet'
+import { Box, Heading, Text } from 'grommet'
+import { User, RootState } from './types'
+import { connect } from 'react-redux'
+import { navigate } from 'hookrouter'
 
 interface Props {
-  route: string;
+  user: User,
 }
 
-export default class Header extends Component<Props, any> {
+export class Header extends Component<Props, any> {
 
   render() {
-    // const {route} = this.props
+    const {user} = this.props
 
     return (
       <Box>
-        <Heading style={{display: 'inline-block'}} textAlign="center" size="large"> PetSitter </Heading>
+        <Heading onClick={() => navigate('/')} style={{display: 'inline-block'}} textAlign="center" size="large">
+          PetSitter
+        </Heading>
+          <small>
+            {user.email ? user.email : ''}
+          </small>
       </Box>
     )
   }
 }
+
+export default connect(
+  (state: RootState) => ({
+    user: state.user
+  }), {
+
+  }
+)(Header)

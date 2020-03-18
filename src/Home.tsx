@@ -1,15 +1,22 @@
 import React, { Component } from 'react'
 import {Form, FormField, Button, Box, Heading } from 'grommet'
 import { navigate } from 'hookrouter'
+import { connect } from 'react-redux'
+import { login } from './redux/modules/user'
 
+// import * as userActions from './redux/modules/user'
+
+import { User } from './types'
 
 interface Props {
-
+  login: Function;
 }
 
-export default class Home extends Component<Props, any> {
+export class Home extends Component<Props, any> {
 
-  onSubmit = () => {
+  onSubmit = (form: any) => {
+    const {email, password} : User = form.value
+    this.props.login({email,password})
     navigate('/jobs')
   }
 
@@ -41,3 +48,8 @@ export default class Home extends Component<Props, any> {
     )
   }
 }
+
+export default connect((state) => {
+}, {
+  login
+})(Home)

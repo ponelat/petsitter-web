@@ -22,6 +22,7 @@ const routes = {
 const PageNotFound = () => <Box>Page not found</Box>
 
 function App() {
+
   const route = useRoutes(routes)
 
   return (
@@ -40,7 +41,7 @@ function App() {
           ]}
         >
           <Box gridArea="header">
-            <Header route={route}/>
+            <Header />
           </Box>
           <Main gridArea="main" direction="row" alignContent="end" gap="small" >
             {route || <PageNotFound/>}

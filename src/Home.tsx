@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Form, FormField, Button, Box, Heading } from 'grommet'
 import { navigate } from 'hookrouter'
 import { connect } from 'react-redux'
-import { login } from './redux/modules/user'
+import { login } from './duck-user'
 
 // import * as userActions from './redux/modules/user'
 

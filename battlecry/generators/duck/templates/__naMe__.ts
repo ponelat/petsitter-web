@@ -1,4 +1,4 @@
-import { Message } from './types'
+import { Dispatcher, Message } from './types'
 // Actions
 
 // Reducer

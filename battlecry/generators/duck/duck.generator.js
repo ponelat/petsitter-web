@@ -72,7 +72,8 @@ export default class DuckGenerator extends Generator {
       )
 
       file.after('// Action Creators', [
-        namedCasex('export function __naMe__() {', + `${action}_${this.args.name}`),
+        namedCasex('export function __naMe__() ', + `${action}_${this.args.name}`)
+          + (isAsync ? ' : Dispatcher {' : ': Message<any> {'),
         fnBody,
         '}',
         ''

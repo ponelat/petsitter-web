@@ -4,10 +4,11 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {Provider} from 'react-redux'
-import configureStore from './redux/configureStore'
+import configureStore from './configureStore'
 
 const store = configureStore({
   user: {},
+  error: {},
 })
 
 ReactDOM.render((

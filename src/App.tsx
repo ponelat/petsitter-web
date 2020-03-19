@@ -6,6 +6,7 @@ import { Grommet, Grid, Main, Box } from 'grommet'
 
 import Header from './Header'
 import Home from './Home'
+import ErrorComp from './ErrorComp'
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
@@ -42,12 +43,12 @@ function App() {
         >
           <Box gridArea="header">
             <Header />
+            <ErrorComp/>
           </Box>
           <Main gridArea="main" direction="row" alignContent="end" gap="small" >
             {route || <PageNotFound/>}
           </Main>
           <Box gridArea="footer" background="light-2" >
-            Footer
           </Box>
         </Grid>
       </Grommet>

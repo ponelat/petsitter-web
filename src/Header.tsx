@@ -1,29 +1,29 @@
-import React, { Component } from 'react'
-import { Box, Heading, Text } from 'grommet'
-import { User, RootState } from './types'
+import React from 'react'
+import { Box, Heading, Nav } from 'grommet'
+import { RootState } from './types'
 import { connect } from 'react-redux'
 import { navigate } from 'hookrouter'
+import Link from './Link'
 
-interface Props {
-  user: User,
-}
+// interface Props {
+//   route: string;
+// }
 
-export class Header extends Component<Props, any> {
+export function Header(props: any) {
 
-  render() {
-    const {user} = this.props
+  return (
+    <Box>
+      <Heading onClick={() => navigate('/')} style={{display: 'inline-block'}} textAlign="center" size="medium">
+        PetSitter
+      </Heading>
+      <Nav background="brand" direction="row" pad="small">
+        <Link href="/" label="Home"/>
+        <Link href="/jobs" label="Jobs"/>
+        <Link href="/jobs/new" label="New Job"/>
+      </Nav>
 
-    return (
-      <Box>
-        <Heading onClick={() => navigate('/')} style={{display: 'inline-block'}} textAlign="center" size="large">
-          PetSitter
-        </Heading>
-          <small>
-            {user.email ? user.email : ''}
-          </small>
-      </Box>
-    )
-  }
+    </Box>
+  )
 }
 
 export default connect(

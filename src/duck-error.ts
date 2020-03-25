@@ -1,4 +1,4 @@
-import { Dispatcher, Message } from './types'
+import { Message } from './types'
 // Actions
 const SET_ERROR = 'error/SET-ERROR';
 const CLEAR_ERROR = 'error/CLEAR-ERROR';

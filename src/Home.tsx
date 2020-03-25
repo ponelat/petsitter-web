@@ -50,6 +50,7 @@ export class Home extends Component<Props, any> {
 }
 
 export default connect((state) => {
+  return {}
 }, {
   login
 })(Home)

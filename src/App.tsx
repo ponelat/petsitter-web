@@ -2,9 +2,11 @@ import React from 'react'
 import { createGlobalStyle } from 'styled-components'
 import {useRoutes} from 'hookrouter';
 
-import { Grommet, Grid, Main, Box } from 'grommet'
+import { Grommet, Grid, Main, Box, Heading } from 'grommet'
 
 import Header from './Header'
+import JobsPage from './JobsPage'
+import NewJobPage from './NewJobPage'
 import Home from './Home'
 import ErrorComp from './ErrorComp'
 
@@ -16,11 +18,19 @@ const GlobalStyle = createGlobalStyle`
 
 const routes = {
   '/': () => <Home/> ,
-  '/jobs': () => <Box>Jobs</Box>,
-  '/profile': () => <Box> Profile </Box>
+  '/jobs': () => <JobsPage />,
+  '/jobs/new': () => <NewJobPage />,
+  '/profile': () => <Box> Profile </Box>,
+} // End of Routes
+
+
+const theme = {
+
 }
 
-const PageNotFound = () => <Box>Page not found</Box>
+const PageNotFound = () => (
+  <Heading level={2}> Page not found </Heading>
+)
 
 function App() {
 
@@ -29,7 +39,7 @@ function App() {
   return (
     <>
       <GlobalStyle/>
-      <Grommet plain>
+      <Grommet plain theme={theme}>
         <Grid
           style={{'minHeight': '100vh'}}
           rows={['200px', '1fr', 'xsmall']}
@@ -42,7 +52,7 @@ function App() {
           ]}
         >
           <Box gridArea="header">
-            <Header />
+            <Header/>
             <ErrorComp/>
           </Box>
           <Main gridArea="main" direction="row" alignContent="end" gap="small" >

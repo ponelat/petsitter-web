@@ -11,7 +11,8 @@ export interface Message<T> {
 }
 
 export interface User {
-  fullName?: string;
+  id?: string;
+  full_name?: string;
   email?: string;
   password?: string;
 }

@@ -1,35 +1,45 @@
-export const TODO = {}
+import fetch from 'isomorphic-fetch'
+import { User } from './types'
 
-// import {init} from './gen/gateway/index';
+export class PetSitterAPI {
+  url: string;
+  email?: string;
+  password?: string;
 
-// init({
-//   url: 'https://httpbin.org/anything', // set your service url explicitly. Defaults to the one generated from your OpenAPI spec
-//   getAuthorization // Add a `getAuthorization` handler for when a request requires auth credentials
-// });
+  constructor(url: string) {
+    this.url = url
+  }
+
+  setSimpleToken(email?: string, password?: string) {
+    this.email = email
+    this.password = password
+  }
+
+  clearSimpleToken() {
+    this.email = ''
+    this.password = ''
+  }
+
+  simpleTokenHeaders() : Headers | null {
+    if(!this.email)
+      return null
+
+    return new Headers({
+      "Authorization": `Basic ${btoa(`${this.email}:${this.password}`)}`
+    })
+  }
+
+  async getUser(id: string) : Promise<User> {
+    const headers = this.simpleTokenHeaders()
+    if(!headers)
+      return Promise.reject(new Error("No credentials in memory"))
+
+    return fetch(`${this.url}/users/${id}`, {
+      headers
+    }).then((res: Response) => res.json())
+  }
+
+}
 
 
-// // The param 'security' represents the security definition in your OpenAPI spec a request is requiring
-// // For bearer type it has two properties:
-// // 1. id - the name of the security definition from your OpenAPI spec
-// // 2. scopes - the token scope(s) required
-// // Should return a promise
-// function getAuthorization(security: api.OperationSecurity) {
-//   switch (security.id) {
-//     case 'SimpleToken': return getSimpleToken();
-//     default: throw new Error(`Unknown security type '${security.id}'`)
-//   }
-// };
-
-// let token: api.OperationRightsInfo
-// function getSimpleToken() {
-//   return new Promise<api.OperationRightsInfo>((resolve) => {
-//     if(!token) {
-//       const user = JSON.parse(localStorage.getItem('user') || '{}')
-//       token = {
-//         username: user.username,
-//         password: user.password
-//       }
-//     }
-//     resolve(token)
-//   })
-// }
+export default new PetSitterAPI('http://localhost:4010')

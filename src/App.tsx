@@ -1,6 +1,6 @@
 import React from 'react'
 import { createGlobalStyle } from 'styled-components'
-import {useRoutes} from 'hookrouter';
+import {useRoutes, useInterceptor} from 'hookrouter';
 
 import { Grommet, Grid, Main, Box, Heading } from 'grommet'
 
@@ -9,6 +9,8 @@ import JobsPage from './JobsPage'
 import NewJobPage from './NewJobPage'
 import Home from './Home'
 import ErrorComp from './ErrorComp'
+import { logout } from './duck-user'
+import { connect } from 'react-redux'
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
@@ -32,7 +34,19 @@ const PageNotFound = () => (
   <Heading level={2}> Page not found </Heading>
 )
 
-function App() {
+interface Props {
+  logout: Function;
+}
+
+function App(props: Props) {
+
+  useInterceptor((currentPath: string, nextPath: string) => {
+    if(nextPath === '/logout') {
+      props.logout()
+      return '/'
+    }
+    return nextPath
+  })
 
   const route = useRoutes(routes)
 
@@ -66,4 +80,8 @@ function App() {
   )
 }
 
-export default App
+export default connect(()=>{
+  return {}
+}, {
+  logout
+})(App)

@@ -1,6 +1,5 @@
 import fetch from 'isomorphic-fetch'
-import { User, JobsPage } from './types'
-
+import { User, JobsPage, Job } from './types'
 
 export class PetSitterAPI {
   url: string;
@@ -21,38 +20,43 @@ export class PetSitterAPI {
     this.password = ''
   }
 
-  simpleTokenHeaders() : Headers | null {
-    if(!this.email)
-      return null
-
+  headers() : Headers {
     return new Headers({
-      "Authorization": `Basic ${btoa(`${this.email}:${this.password}`)}`
+      "Authorization": `Basic ${btoa(`${this.email}:${this.password}`)}`,
+      "Content-Type": 'application/json'
     })
   }
 
   async getUser(id: string) : Promise<User> {
-    const headers = this.simpleTokenHeaders()
-    if(!headers)
-      return Promise.reject(new Error("No credentials in memory"))
-
     return fetch(`${this.url}/users/${id}`, {
-      headers
+      headers: this.headers()
     }).then((res: Response) => res.json())
   }
 
   async getNextJobsPage() : Promise<JobsPage> {
-    const headers = this.simpleTokenHeaders()
-    if(!headers)
-      return Promise.reject(new Error("No credentials in memory"))
-
     return fetch(`${this.url}/jobs`, {
-      headers
+      headers: this.headers()
     }).then((res: Response) => res.json())
   }
 
+  async createJob(job: Job) : Promise<Job> {
+    return fetch(`${this.url}/jobs`, {
+      method: 'POST',
+      body: JSON.stringify(job),
+      headers: this.headers(),
+    }).then((res: Response) => res.json())
+  }
 
 
 }
 
 
-export default new PetSitterAPI('')
+const instance = new PetSitterAPI('')
+// Used to extend the Window object
+
+declare global {
+    interface Window { api: any; }
+}
+window.api = instance
+
+export default instance

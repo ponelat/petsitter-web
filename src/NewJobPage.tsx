@@ -1,7 +1,9 @@
-import {Form, Calendar, FormField, Button, Box, Heading, Select, RadioButtonGroup } from 'grommet'
+import {Form, RangeInput, Calendar, FormField, Button, Box, Heading, Select, RadioButtonGroup } from 'grommet'
 import React, {useState} from 'react'
 import { connect } from 'react-redux'
 import { navigate } from 'hookrouter'
+import { createJob } from './duck-jobs'
+import { Job } from './types'
 
 export function NewJobsPage(props: any) {
   const today = new Date()
@@ -25,19 +27,48 @@ export function NewJobsPage(props: any) {
 
   function onSubmit(form: any) {
     const [starts_at, ends_at] = startsEnds
-    let newForm = {...form.value, starts_at, ends_at}
-    alert(JSON.stringify(newForm, null, 2))
+
+    const {
+      name, breed, size, years_old,
+      activities,
+      description,
+    } = form.value
+
+    let newForm : Job = {
+      activities,
+      description,
+      dog: {
+        name,
+        breed,
+        size,
+        years_old: +years_old,
+      },
+      starts_at,
+      ends_at
+    }
+
+    alert(JSON.stringify(newForm))
+    props.createJob(newForm).then(() => {
+      navigate('/jobs')
+    })
   }
+
+  const [formValue, setForm] = useState({
+    years_old: 1,
+  })
 
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
       <Box background="light-2" pad="medium" width="large" >
         <Heading level={3}>Create new job</Heading>
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit} value={formValue} onChange={(form: any) => setForm(form.value)}>
 
-          <FormField name="name" label="Dog name"  />
-          <FormField name="breed" label="Dog breed"  />
-          <FormField name="size" label="Size" component={RadioButtonGroup} options={['small', 'medium', 'large']} />
+          <FormField required name="name" label="Dog name"  />
+          <FormField required name="breed" label="Dog breed"  />
+          <FormField required name="size" label="Size" component={RadioButtonGroup} options={['small', 'medium', 'large']} />
+          <FormField name="years_old" label="Dog Age (years)" type="number" min={1} max={30} step={1} />
+
+          <FormField required name="description" label="Description" />
 
           <FormField label="Start / End" >
             <Calendar
@@ -64,4 +95,5 @@ export function NewJobsPage(props: any) {
 export default connect((state) => {
   return {}
 }, {
+  createJob
 })(NewJobsPage)

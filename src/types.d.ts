@@ -22,13 +22,16 @@ export interface Dog {
   name: string[];
   size?: "small" | "medium" | "large";
   breed?: string;
+  years_old: number;
 }
 
 export interface Job {
-  id: string;
+  id?: string;
   dog: Dog;
-  activites: string[];
+  activities: string[];
   description: string;
+  starts_at: string;
+  ends_at: string;
 }
 
 export interface JobsPage {

@@ -1,7 +1,7 @@
 import { Dispatcher, Message } from './types'
 import { setError } from './duck-error'
 import Api from './api'
-import { JobsPage } from './types'
+import { JobsPage, Job } from './types'
 
 // Actions
 const SET_CURRENT = 'jobs/SET-CURRENT';
@@ -42,6 +42,13 @@ export function findById()  : Dispatcher {
 
   }
 }
+
+export function createJob(job: Job) : Dispatcher {
+  return (dispatch) => {
+    return Api.createJob(job).catch(err => dispatch(setError(err)))
+  }
+}
+
 
 export function setCurrent() : Message<any> {
   return { type: SET_CURRENT };

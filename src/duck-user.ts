@@ -19,11 +19,17 @@ export default function reducer(state = {}, action: Message<any>) {
 export function getCurrentUser()  : Dispatcher {
   return (dispatch) => {
     Api.getUser('@me').then((fetchedUser) => {
-      localStorage.setItem('user', JSON.stringify(fetchedUser))
-      dispatch(setUser(fetchedUser))
+      dispatch(storeUser(fetchedUser))
     }).catch(err => {
       dispatch(setError(err))
     })
+  }
+}
+
+export function storeUser(user: User) : Dispatcher {
+  return (dispatch) => {
+    localStorage.setItem('user', JSON.stringify(user))
+    dispatch(setUser(user))
   }
 }
 

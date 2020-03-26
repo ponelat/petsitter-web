@@ -49,9 +49,7 @@ export function NewJobsPage(props: any) {
             />
           </FormField>
 
-
-
-          <FormField name="activities" placeholder="Select one or more activites" label="Activities" multiple options={[ "walk", "dropin", "boarding", "sitting", "daycare"]} component={Select} />
+          <FormField required name="activities" placeholder="Select one or more activites" label="Activities" multiple options={[ "walk", "dropin", "boarding", "sitting", "daycare"]} component={Select} />
 
           <Box direction="row" justify="between" gap="medium" >
             <Button onClick={() => navigate('/jobs')} label="Back to Jobs"/>

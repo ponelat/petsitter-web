@@ -2,52 +2,11 @@ import React from 'react'
 import {Button, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
 import { A } from 'hookrouter'
 import { connect } from 'react-redux'
+import { JobsPage } from './types'
 
-
-const jobs = {
-  "items": [{
-    "id": "string0",
-    "creator_user_id": "string",
-    "worker_user_id": "string",
-    "starts_at": "2020-03-19T14:37:20.132Z",
-    "ends_at": "2020-03-19T14:37:20.132Z",
-    "dog": {
-      "name": "string",
-      "size": "small",
-      "years_old": 0,
-      "breed": "string"
-    },
-    "activities": [
-      "walk"
-    ],
-    "created_at": "2020-03-19T14:37:20.132Z",
-    "updated_at": "2020-03-19T14:37:20.132Z",
-    "description": "string"
-  },{
-    "id": "string1",
-    "creator_user_id": "string",
-    "worker_user_id": "string",
-    "starts_at": "2020-03-19T14:37:20.132Z",
-    "ends_at": "2020-03-19T14:37:20.132Z",
-    "dog": {
-      "name": "string",
-      "size": "small",
-      "years_old": 0,
-      "breed": "string"
-    },
-    "activities": [
-      "walk"
-    ],
-    "created_at": "2020-03-19T14:37:20.132Z",
-    "updated_at": "2020-03-19T14:37:20.132Z",
-    "description": "string"
-  }],
-  "total_items": 2,
-  "has_more": true
-}
 
 interface Props {
-  findAll: Function;
+  jobsPage: JobsPage
 }
 
 function applyTo(id: string) {
@@ -84,6 +43,7 @@ function JobRow(job: any) {
 
 
 export function Jobs(props: Props) {
+  const jobs = props.jobsPage.items || []
   return (
     <Table>
       <TableHeader>
@@ -116,7 +76,11 @@ export function Jobs(props: Props) {
       </TableHeader>
       <TableBody>
 
-        {jobs.items.map(job => <JobRow key={job.id} {...job}/>)}
+        {!jobs.length ? (
+          <b>No jobs!</b>
+        ) : null }
+
+        {jobs.map(job => <JobRow key={job.id} {...job}/>)}
 
       </TableBody>
     </Table>

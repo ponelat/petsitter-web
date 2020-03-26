@@ -1,4 +1,7 @@
 import { Dispatcher, Message } from './types'
+import { setError } from './duck-error'
+import Api from './api'
+import { JobsPage } from './types'
 
 // Actions
 const SET_CURRENT = 'jobs/SET-CURRENT';
@@ -12,15 +15,19 @@ export default function reducer(state = {}, action: Message<any> = {}) {
       return state;
     case SET_PAGE:
       // Perform action
-      return state;
+      return {...state, jobsPage: action.payload};
     default: return state;
   }
 }
 
 // Action Creators
-export function findAll()  : Dispatcher {
+export function getNextPage() : Dispatcher {
   return (dispatch) => {
-
+    Api.getNextJobsPage().then(jobsPage => {
+      dispatch(setPage(jobsPage))
+    }).catch(err => {
+      dispatch(setError(err))
+    })
   }
 }
 
@@ -40,6 +47,6 @@ export function setCurrent() : Message<any> {
   return { type: SET_CURRENT };
 }
 
-export function setPage() : Message<any> {
-  return { type: SET_PAGE };
+export function setPage(jobsPage: JobsPage) : Message<JobsPage> {
+  return { type: SET_PAGE, payload: jobsPage };
 }

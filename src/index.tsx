@@ -6,16 +6,22 @@ import * as serviceWorker from './serviceWorker';
 import {Provider} from 'react-redux'
 import configureStore from './configureStore'
 import { User } from './types'
+import Api from './api'
 
 let user : User = {}
 try {
   user = JSON.parse(localStorage.getItem('user') || '{}')
+  Api.setSimpleToken(user.email, user.password)
 } catch(e) {
   console.error(e)
 }
+
 const store = configureStore({
-  user: user,
+  user,
   error: {},
+  jobs: {
+    jobsPage: {}
+  },
 })
 
 ReactDOM.render((

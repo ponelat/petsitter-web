@@ -1,15 +1,24 @@
 import { Box, Heading, Button } from 'grommet'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Jobs from './Jobs'
 import JobApplications from './JobApplications'
 import { navigate } from 'hookrouter'
+import { RootState, JobsPage } from './types'
+import {getNextPage} from './duck-jobs'
 
 interface Props {
-
+  jobsPage: JobsPage;
+  getNextPage: Function;
 }
 
-export function JobsPage(props: Props) {
+export function JobsPageComponent(props: Props) {
+
+  const { jobsPage, getNextPage } = props
+  console.log("jobPage", jobsPage)
+
+  useEffect(() => getNextPage(), [getNextPage])
+
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
 
@@ -17,7 +26,7 @@ export function JobsPage(props: Props) {
       <JobApplications/>
 
       <Heading level={3}>My Jobs</Heading>
-      <Jobs/>
+      <Jobs jobsPage={jobsPage}/>
 
       <Button onClick={() => navigate('/jobs/new')} label="Create Job" primary />
 
@@ -26,8 +35,11 @@ export function JobsPage(props: Props) {
   )
 }
 
-export default connect((state) => {
-  return {}
+export default connect((state: RootState) => {
+  return {
+    jobsPage: state.jobs.jobsPage
+  }
 
 }, {
-})(JobsPage)
+  getNextPage
+})(JobsPageComponent)

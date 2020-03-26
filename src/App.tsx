@@ -5,7 +5,7 @@ import {useRoutes, useInterceptor} from 'hookrouter';
 import { Grommet, Grid, Main, Box, Heading } from 'grommet'
 
 import Header from './Header'
-import JobsPage from './JobsPage'
+import JobsPageComponent from './JobsPage'
 import NewJobPage from './NewJobPage'
 import Home from './Home'
 import ErrorComp from './ErrorComp'
@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
 
 const routes = {
   '/': () => <Home/> ,
-  '/jobs': () => <JobsPage />,
+  '/jobs': () => <JobsPageComponent/>,
   '/jobs/new': () => <NewJobPage />,
   '/profile': () => <Box> Profile </Box>,
 } // End of Routes

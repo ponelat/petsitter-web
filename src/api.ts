@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch'
-import { User } from './types'
+import { User, JobsPage } from './types'
+
 
 export class PetSitterAPI {
   url: string;
@@ -39,7 +40,19 @@ export class PetSitterAPI {
     }).then((res: Response) => res.json())
   }
 
+  async getNextJobsPage() : Promise<JobsPage> {
+    const headers = this.simpleTokenHeaders()
+    if(!headers)
+      return Promise.reject(new Error("No credentials in memory"))
+
+    return fetch(`${this.url}/jobs`, {
+      headers
+    }).then((res: Response) => res.json())
+  }
+
+
+
 }
 
 
-export default new PetSitterAPI('http://localhost:4010')
+export default new PetSitterAPI('')

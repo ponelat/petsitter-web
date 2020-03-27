@@ -12,7 +12,7 @@ export default function reducer(state = {}, action: Message<any> = {}) {
   switch (action.type) {
     case SET_CURRENT:
       // Perform action
-      return state;
+      return {...state, current: action.payload};
     case SET_PAGE:
       // Perform action
       return {...state, jobsPage: action.payload};
@@ -49,9 +49,18 @@ export function createJob(job: Job) : Dispatcher {
   }
 }
 
+export function fetchJob(id: string) : Dispatcher {
+  return (dispatch) => {
+    return Api.fetchJob(id)
+      .then((job: Job) => {
+        dispatch(setCurrent(job))
+      })
+      .catch(err => dispatch(setError(err)))
+  }
+}
 
-export function setCurrent() : Message<any> {
-  return { type: SET_CURRENT };
+export function setCurrent(job: Job) : Message<Job> {
+  return { type: SET_CURRENT, payload: job };
 }
 
 export function setPage(jobsPage: JobsPage) : Message<JobsPage> {

@@ -77,7 +77,7 @@ export function Jobs(props: Props) {
       <TableBody>
 
         {!jobs.length ? (
-          <b>No jobs!</b>
+          <TableRow><TableCell> No Jobs! </TableCell></TableRow>
         ) : null }
 
         {jobs.map(job => <JobRow key={job.id} {...job}/>)}

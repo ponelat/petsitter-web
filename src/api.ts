@@ -47,6 +47,12 @@ export class PetSitterAPI {
     }).then((res: Response) => res.json())
   }
 
+  async fetchJob(id: string) : Promise<Job> {
+    return fetch(`${this.url}/jobs/${id}`, {
+      headers: this.headers(),
+    }).then((res: Response) => res.json())
+  }
+
 
 }
 

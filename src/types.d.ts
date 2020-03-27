@@ -19,8 +19,8 @@ export interface User {
 }
 
 export interface Dog {
-  name: string[];
-  size?: "small" | "medium" | "large";
+  name: string;
+  size?: string;
   breed?: string;
   years_old: number;
 }
@@ -42,6 +42,7 @@ export interface JobsPage {
 
 export interface Jobs {
   jobsPage: JobsPage;
+  current?: Job;
 }
 
 

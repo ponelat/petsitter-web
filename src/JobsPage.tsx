@@ -15,13 +15,10 @@ interface Props {
 export function JobsPageComponent(props: Props) {
 
   const { jobsPage, getNextPage } = props
-  console.log("jobPage", jobsPage)
-
   useEffect(() => getNextPage(), [getNextPage])
 
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
-
       <Heading level={3}>Pending Job Applications</Heading>
       <JobApplications/>
 

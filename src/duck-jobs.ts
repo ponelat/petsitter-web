@@ -44,13 +44,19 @@ export function findById()  : Dispatcher {
 }
 
 export function createJob(job: Job) : Dispatcher {
-  return (dispatch) => {
+  return async (dispatch) => {
     return Api.createJob(job).catch(err => dispatch(setError(err)))
   }
 }
 
+export function updateJob(job: Job) : Dispatcher {
+  return async (dispatch) => {
+    return Api.updateJob(job).catch(err => dispatch(setError(err)))
+  }
+}
+
 export function fetchJob(id: string) : Dispatcher {
-  return (dispatch) => {
+  return async (dispatch) => {
     return Api.fetchJob(id)
       .then((job: Job) => {
         dispatch(setCurrent(job))

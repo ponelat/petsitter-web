@@ -23,14 +23,11 @@ function formatDate(str: string) {
 function duration(starts: string, ends: string) {
   const first = new Date(starts).getTime()
   const second = new Date(ends).getTime()
-  console.log("first", first)
-
   const days = Math.round((second-first)/(1000*60*60*24)) + 1;
   return days + (days > 1 ? ' days' : ' day')
 }
 
 function JobRow(job: Job) {
-
 
   const {id, dog, starts_at, ends_at} = job
   const startsAtStr = formatDate(starts_at)

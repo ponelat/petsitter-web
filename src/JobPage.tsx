@@ -2,13 +2,14 @@ import {Calendar, Form, FormField, Button, Box, Heading, Select, RadioButtonGrou
 import React, {useState, useEffect} from 'react'
 import { connect } from 'react-redux'
 import { navigate } from 'hookrouter'
-import { createJob, fetchJob } from './duck-jobs'
+import { createJob, fetchJob, updateJob } from './duck-jobs'
 import { Job, RootState } from './types'
 
 interface Props {
   jobId: string;
   job?: Job;
   createJob: Function;
+  updateJob: Function;
   fetchJob: Function;
 }
 
@@ -53,6 +54,8 @@ export function JobPage(props: Props) {
   let todayNextYear = new Date()
   todayNextYear.setFullYear(today.getFullYear() + 1)
   const todayNextYearStr = todayNextYear.toISOString()
+  const isEdit = props.jobId !== 'new'
+
 
   function onSelect(dates: any) {
 
@@ -76,6 +79,7 @@ export function JobPage(props: Props) {
     } = form.value
 
     let job : Job = {
+      ...props.job,
       activities,
       description,
       dog: {
@@ -88,13 +92,19 @@ export function JobPage(props: Props) {
       ends_at
     }
 
-    props.createJob(job)
-      .then(() => {
-        navigate('/jobs')
-      })
+    if(isEdit){
+      props.updateJob(job)
+        .then(() => {
+          navigate('/jobs')
+        })
+    } else {
+      props.createJob(job)
+        .then(() => {
+          navigate('/jobs')
+        })
+    }
   }
 
-  const isEdit = props.jobId !== 'new'
   const { fetchJob, jobId, job } = props
 
   useEffect(() => {
@@ -152,5 +162,6 @@ export default connect((state: RootState) => {
   }
 }, {
   createJob,
+  updateJob,
   fetchJob,
 })(JobPage)

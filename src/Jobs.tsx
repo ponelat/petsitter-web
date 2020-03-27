@@ -2,7 +2,7 @@ import React from 'react'
 import {Button, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
 import { A } from 'hookrouter'
 import { connect } from 'react-redux'
-import { JobsPage } from './types'
+import { JobsPage, Job } from './types'
 
 
 interface Props {
@@ -13,9 +13,28 @@ function applyTo(id: string) {
 
 }
 
-function JobRow(job: any) {
+function formatDate(str: string) {
+  const d = new Date(str)
+  const dtf = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day: '2-digit' })
+  const [{ value: mo },,{ value: da }] = dtf.formatToParts(d)
+  return `${mo}-${da}`
+}
 
-  const {id, dog={}} = job
+function duration(starts: string, ends: string) {
+  const first = new Date(starts).getTime()
+  const second = new Date(ends).getTime()
+  console.log("first", first)
+
+  const days = Math.round((second-first)/(1000*60*60*24)) + 1;
+  return days + (days > 1 ? ' days' : ' day')
+}
+
+function JobRow(job: Job) {
+
+
+  const {id, dog, starts_at, ends_at} = job
+  const startsAtStr = formatDate(starts_at)
+  const endsAtStr = formatDate(ends_at)
 
   return (
     <TableRow>
@@ -24,11 +43,11 @@ function JobRow(job: any) {
         <A href={`/jobs/${id}`}>#{id}</A>
       </TableCell>
 
-      <TableCell>{dog.name}</TableCell>
+      <TableCell>{dog?.name}</TableCell>
 
-      <TableCell>1 day</TableCell>
+      <TableCell>{duration(starts_at, ends_at)}</TableCell>
 
-      <TableCell>Jan-01 to Jan-02</TableCell>
+      <TableCell>{startsAtStr} to {endsAtStr}</TableCell>
 
       <TableCell><A href="/jobs/1234">Details</A></TableCell>
 
@@ -44,6 +63,7 @@ function JobRow(job: any) {
 
 export function Jobs(props: Props) {
   const jobs = props.jobsPage.items || []
+
   return (
     <Table>
       <TableHeader>

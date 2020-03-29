@@ -1,5 +1,5 @@
 // Actions
-import { User,  Message, Dispatcher } from './types'
+import { User,  Message, Dispatcher, GetState } from './types'
 import { setError }  from './duck-error'
 import Api from './api'
 
@@ -52,4 +52,13 @@ export function logout() : Dispatcher {
     localStorage.removeItem('user')
     dispatch(setUser({}))
   }
+}
+
+
+export function user(getState: GetState) : User {
+  return getState().user
+}
+
+export function userId(getState: GetState) : string {
+  return user(getState).id || ''
 }

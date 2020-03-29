@@ -6,6 +6,7 @@ import { Grommet, Grid, Main, Box, Heading } from 'grommet'
 
 import Header from './Header'
 import JobsPageComponent from './JobsPage'
+import JobApplications from './job-applications'
 import JobPage from './JobPage'
 import Home from './Home'
 import ErrorComp from './ErrorComp'
@@ -21,6 +22,7 @@ const GlobalStyle = createGlobalStyle`
 const routes = {
   '/': () => <Home/> ,
   '/jobs': () => <JobsPageComponent/>,
+  '/job-applications': () => <JobApplications/>,
   '/jobs/:id': ({id}: any) => <JobPage jobId={id} />,
   '/profile': () => <Box> Profile </Box>,
 } // End of Routes

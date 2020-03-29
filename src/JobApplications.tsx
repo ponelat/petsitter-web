@@ -2,12 +2,17 @@ import React, {useEffect} from 'react'
 import {Button, Box, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
 import { A } from 'hookrouter'
 import { RootState, JobApplication } from './types'
-import { connect } from 'react-redux'
 
 
-export function JobApplicationRow(jobApplication: any) {
+interface RowProps extends JobApplication {
+  key: string;
+  deny: Function;
+  accept: Function;
+}
 
-  const {job_id, status, accept} = jobApplication
+export function JobApplicationRow(jobApplication: RowProps) {
+
+  const {job_id, status, id, deny, accept} = jobApplication
 
   return (
     <TableRow>
@@ -18,8 +23,9 @@ export function JobApplicationRow(jobApplication: any) {
 
       <TableCell>{status}</TableCell>
 
-      <TableCell>
-        <Button label="Accept" primary onClick={accept} />
+      <TableCell gap="small" direction="row">
+        <Button label="Accept" primary onClick={() => accept()} />
+        <Button label="Deny" onClick={() => deny()} />
       </TableCell>
 
     </TableRow>
@@ -30,10 +36,11 @@ export function JobApplicationRow(jobApplication: any) {
 
 interface Props {
   jobApplications?: JobApplication[];
+  acceptDenyJobApplication: Function;
 }
 
 export default function JobApplicationsComp (props: Props) {
-  const { jobApplications = [] } = props
+  const { jobApplications = [], acceptDenyJobApplication } = props
 
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
@@ -57,7 +64,16 @@ export default function JobApplicationsComp (props: Props) {
         </TableHeader>
         <TableBody>
 
-          {jobApplications.map(job => <JobApplicationRow key={job.id} {...job}/>)}
+          {
+            jobApplications.map(job => (
+              <JobApplicationRow
+                {...job}
+                key={job.id || ''}
+                deny={() => acceptDenyJobApplication(job.id, 'DENIED')}
+                accept={() => acceptDenyJobApplication(job.id, 'ACCEPTED')}
+              />
+            ))
+          }
 
         </TableBody>
       </Table>

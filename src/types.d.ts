@@ -16,6 +16,7 @@ export interface User {
   full_name?: string;
   email?: string;
   password?: string;
+  roles?: string[];
 }
 
 export interface Dog {
@@ -34,6 +35,8 @@ export interface Job {
   ends_at: string;
 }
 
+export type JobApplicationStatus = 'DENIED' | 'ACCEPTED'
+
 export interface JobsPage {
   items?: Job[];
   has_more?: boolean;
@@ -44,13 +47,12 @@ export interface JobApplication {
   id?: string;
   user_id: string;
   job_id: string;
-  status: string;
+  status: JobApplicationStatus;
 }
 
 export interface JobApplicationQueries {
   job_id?: string;
-  creator_user_id?: string;
-  worker_user_id?: string;
+  user_id?: string;
 }
 
 export interface Jobs {
@@ -59,4 +61,6 @@ export interface Jobs {
   currentApplications?: JobApplication[];
 }
 
-type Dispatcher = (dispatch: Function, getState: Function) => any
+export type GetState = () => RootState
+
+type Dispatcher = (dispatch: Function, getState: GetState) => any

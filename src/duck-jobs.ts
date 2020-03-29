@@ -1,7 +1,8 @@
 import { Dispatcher, Message } from './types'
 import { setError } from './duck-error'
+import {userId} from './duck-user'
 import Api from './api'
-import { JobsPage, Jobs, Job, JobApplication } from './types'
+import { JobsPage, Jobs, Job, JobApplication, RootState, JobApplicationStatus } from './types'
 
 // Actions
 const SET_JOB_APPLICATIONS = 'jobs/SET-JOB-APPLICATIONS';
@@ -73,16 +74,26 @@ export function fetchJob(id: string) : Dispatcher {
   }
 }
 
-
-export function fetchJobApplicationsForUser(id: string) : Dispatcher {
-  return async (dispatch) => {
-    return Api.fetchJobApplications({creator_user_id: id})
+export function fetchMyJobApplications() : Dispatcher {
+  return async (dispatch, getState) => {
+    const user_id = userId(getState)
+    return Api.fetchJobApplications({user_id})
       .then((ja: JobApplication[]) => {
         dispatch(setJobApplications(ja))
       })
       .catch(err => dispatch(setError(err)))
   }
 }
+
+
+export function acceptDenyJobApplication(id: string,  status: JobApplicationStatus) : Dispatcher {
+   return async (dispatch) => {
+    return Api.acceptDenyJobApplication(id, status)
+      .catch(err => dispatch(setError(err)))
+  }
+}
+
+
 
 
 export function setCurrent(job: Job) : Message<Job> {

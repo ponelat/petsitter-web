@@ -68,15 +68,27 @@ export class PetSitterAPI {
     }).then((res: Response) => res.json())
   }
 
-  async fetchJobApplications({job_id, creator_user_id, worker_user_id}: JobApplicationQueries) : Promise<JobApplication[]> {
-    const query = new URLSearchParams(<Record<string,string>>{
-      job_id,
-      creator_user_id,
-      worker_user_id,
-    })
+  async fetchJobApplications({job_id, user_id}: JobApplicationQueries) : Promise<JobApplication[]> {
+    const query = new URLSearchParams()
+    if(job_id)
+      query.append('job_id', job_id)
+    if(user_id)
+      query.append('user_id', user_id)
 
     return fetch(`${this.url}/job-applications?` + query.toString(), {
       headers: this.headers(),
+    }).then((res: Response) => res.json())
+  }
+
+  async acceptDenyJobApplication(id: string, status: 'ACCEPTED' | 'DENIED') : Promise<any> {
+    console.log('id', id)
+
+    return fetch(`${this.url}/job-applications/${id}`, {
+      method: 'PUT',
+      headers: this.headers(),
+      body: JSON.stringify({
+        status
+      }),
     }).then((res: Response) => res.json())
   }
 

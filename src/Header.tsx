@@ -22,9 +22,9 @@ export function HeaderComp(props: any) {
 
       <Header background="brand" pad="small">
         <Nav background="brand" direction="row" pad="small">
-          <Link href="/" label="Home"/>
           <Link href="/jobs" label="Jobs"/>
-          <Link href="/job-applications" label="Applications"/>
+          <Link href="/job-applications" label="Job Applications"/>
+          <br/>
           <Link href="/jobs/new" label="New Job"/>
         </Nav>
         {full_name ? (
@@ -33,7 +33,9 @@ export function HeaderComp(props: any) {
             <Link color="white" href="/profile" label={full_name}/>
             <Avatar {...setLinkProps({href: '/profile'})}/>
           </Box>
-        ) : null }
+        ) : (
+          <Link color="white" href="/login" label="Login"/>
+        ) }
       </Header>
     </Box>
   )

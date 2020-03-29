@@ -1,7 +1,7 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {Button, Box, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
 import { A } from 'hookrouter'
-import { RootState, JobApplication } from './types'
+import { JobApplication } from './types'
 
 
 interface RowProps extends JobApplication {
@@ -12,7 +12,7 @@ interface RowProps extends JobApplication {
 
 export function JobApplicationRow(jobApplication: RowProps) {
 
-  const {job_id, status, id, deny, accept} = jobApplication
+  const {job_id, status, deny, accept} = jobApplication
 
   return (
     <TableRow>

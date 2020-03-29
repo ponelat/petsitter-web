@@ -2,7 +2,7 @@ import { Dispatcher, Message } from './types'
 import { setError } from './duck-error'
 import {userId} from './duck-user'
 import Api from './api'
-import { JobsPage, Jobs, Job, JobApplication, RootState, JobApplicationStatus } from './types'
+import { JobsPage, Jobs, Job, JobApplication, JobApplicationStatus } from './types'
 
 // Actions
 const SET_JOB_APPLICATIONS = 'jobs/SET-JOB-APPLICATIONS';

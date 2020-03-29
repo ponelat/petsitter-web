@@ -1,6 +1,6 @@
 import React from 'react'
 import { createGlobalStyle } from 'styled-components'
-import {useRoutes, useInterceptor} from 'hookrouter';
+import {usePath, navigate, useRoutes, useInterceptor} from 'hookrouter';
 
 import { Grommet, Grid, Main, Box, Heading } from 'grommet'
 
@@ -8,10 +8,11 @@ import Header from './Header'
 import JobsPageComponent from './JobsPage'
 import JobApplications from './job-applications'
 import JobPage from './JobPage'
-import Home from './Home'
+import Login from './Login'
 import ErrorComp from './ErrorComp'
 import { logout } from './duck-user'
 import { connect } from 'react-redux'
+import {RootState, User} from './types'
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
@@ -19,13 +20,6 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-const routes = {
-  '/': () => <Home/> ,
-  '/jobs': () => <JobsPageComponent/>,
-  '/job-applications': () => <JobApplications/>,
-  '/jobs/:id': ({id}: any) => <JobPage jobId={id} />,
-  '/profile': () => <Box> Profile </Box>,
-} // End of Routes
 
 
 const theme = {
@@ -37,10 +31,33 @@ const PageNotFound = () => (
 )
 
 interface Props {
+  user: User;
   logout: Function;
 }
 
+const Home = (props: any) => {
+  const path = usePath()
+  if(path === '/') {
+    if(props.user?.email) {
+      navigate('/jobs')
+    } else {
+      navigate('/login')
+    }
+  }
+  return null
+}
+
 function App(props: Props) {
+
+
+  const routes = {
+    '/': () => <Home user={props.user}/>,
+    '/login': () => <Login/>,
+    '/jobs': () => <JobsPageComponent/>,
+    '/job-applications': () => <JobApplications/>,
+    '/jobs/:id': ({id}: any) => <JobPage jobId={id} />,
+    '/profile': () => <Box> Profile </Box>,
+  } // End of Routes
 
   useInterceptor((currentPath: string, nextPath: string) => {
     if(nextPath === '/logout') {
@@ -82,8 +99,10 @@ function App(props: Props) {
   )
 }
 
-export default connect(()=>{
-  return {}
+export default connect((state: RootState)=>{
+  return {
+    user: state.user
+  }
 }, {
   logout
 })(App)

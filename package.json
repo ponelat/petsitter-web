@@ -2,7 +2,8 @@
   "name": "petsitter-web",
   "version": "0.1.0",
   "private": true,
-  "openapiUrl": "https://api.swaggerhub.com/apis/ponelat/pet-sitter/1.1",
+  "openapiUrl": "https://api.swaggerhub.com/apis/ponelat/pet-sitter/1.1-fe",
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
@@ -31,10 +32,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "openapi": "node ./fetch-openapi.js",
+    "prism": "npm run openapi && prism mock -p 8080 ./pet-sitter.yaml",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "openapi": "node ./generate.js"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -52,7 +54,7 @@
     ]
   },
   "devDependencies": {
-    "openapi-client": "^1.0.5"
+    "@stoplight/prism-http": "^3.3.2",
     "redux-devtools-extension": "^2.13.8"
   }
 }

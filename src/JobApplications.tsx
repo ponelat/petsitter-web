@@ -1,31 +1,13 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Button, Box, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
 import { A } from 'hookrouter'
-
-const jobApplications = [
-  {
-    "id": "string0",
-    "user_id": "string",
-    "job_id": "string99",
-    "status": "APPLYING"
-  },{
-    "id": "string1",
-    "user_id": "string",
-    "job_id": "string98",
-    "status": "APPLYING"
-  },{
-    "id": "string2",
-    "user_id": "string",
-    "job_id": "string97",
-    "status": "APPLYING"
-  }
-]
-
+import { RootState, JobApplication } from './types'
+import { connect } from 'react-redux'
 
 
 export function JobApplicationRow(jobApplication: any) {
 
-  const {id, job_id, status, accept} = jobApplication
+  const {job_id, status, accept} = jobApplication
 
   return (
     <TableRow>
@@ -35,8 +17,6 @@ export function JobApplicationRow(jobApplication: any) {
       </TableCell>
 
       <TableCell>{status}</TableCell>
-
-      <TableCell><A href={`/job-applications/${id}`}>Details</A></TableCell>
 
       <TableCell>
         <Button label="Accept" primary onClick={accept} />
@@ -49,10 +29,12 @@ export function JobApplicationRow(jobApplication: any) {
 
 
 interface Props {
-
+  jobApplications?: JobApplication[];
 }
 
-export default function JobApplications (props: Props) {
+export default function JobApplicationsComp (props: Props) {
+  const { jobApplications = [] } = props
+
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
 
@@ -66,9 +48,6 @@ export default function JobApplications (props: Props) {
 
             <TableCell scope="col" border="bottom">
               Status
-            </TableCell>
-
-            <TableCell scope="col" border="bottom">
             </TableCell>
 
             <TableCell scope="col" border="bottom">

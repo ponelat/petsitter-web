@@ -1,12 +1,11 @@
 import React from 'react'
 import {Button, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
 import { A } from 'hookrouter'
-import { connect } from 'react-redux'
 import { JobsPage, Job } from './types'
 
 
 interface Props {
-  jobsPage: JobsPage
+  jobsPage?: JobsPage
 }
 
 function applyTo(id: string) {
@@ -57,9 +56,8 @@ function JobRow(job: Job) {
 
 }
 
-
-export function Jobs(props: Props) {
-  const jobs = props.jobsPage.items || []
+export default function Jobs(props: Props) {
+  const jobs = props.jobsPage?.items || []
 
   return (
     <Table>
@@ -103,10 +101,3 @@ export function Jobs(props: Props) {
     </Table>
   )
 }
-
-export default connect((state) => {
-  return {}
-
-}, {
-  findAll: () => {}
-})(Jobs)

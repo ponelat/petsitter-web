@@ -4,39 +4,44 @@ import { connect } from 'react-redux'
 import Jobs from './Jobs'
 import JobApplications from './JobApplications'
 import { navigate } from 'hookrouter'
-import { RootState, JobsPage } from './types'
-import {getNextPage} from './duck-jobs'
+import { RootState, JobsPage, JobApplication } from './types'
+import {getNextPage, fetchJobApplicationsForUser} from './duck-jobs'
 
 interface Props {
-  jobsPage: JobsPage;
+  jobsPage?: JobsPage;
+  jobApplications?: JobApplication[];
   getNextPage: Function;
+  fetchJobApplicationsForUser: Function;
 }
 
 export function JobsPageComponent(props: Props) {
 
-  const { jobsPage, getNextPage } = props
-  useEffect(() => getNextPage(), [getNextPage])
+  const { jobsPage, getNextPage, jobApplications=[], fetchJobApplicationsForUser } = props
+
+  useEffect(() => {
+    getNextPage()
+    fetchJobApplicationsForUser()
+  },[getNextPage, fetchJobApplicationsForUser])
 
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
       <Heading level={3}>Pending Job Applications</Heading>
-      <JobApplications/>
+      <JobApplications jobApplications={jobApplications}/>
 
       <Heading level={3}>My Jobs</Heading>
       <Jobs jobsPage={jobsPage}/>
 
       <Button onClick={() => navigate('/jobs/new')} label="Create Job" primary />
-
-
     </Box>
   )
 }
 
 export default connect((state: RootState) => {
   return {
-    jobsPage: state.jobs.jobsPage
+    jobsPage: state.jobs.jobsPage,
+    jobApplications: state.jobs.currentApplications,
   }
-
 }, {
-  getNextPage
+  fetchJobApplicationsForUser,
+  getNextPage,
 })(JobsPageComponent)

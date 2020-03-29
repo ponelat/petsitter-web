@@ -1,15 +1,19 @@
 import { Dispatcher, Message } from './types'
 import { setError } from './duck-error'
 import Api from './api'
-import { JobsPage, Job } from './types'
+import { JobsPage, Jobs, Job, JobApplication } from './types'
 
 // Actions
+const SET_JOB_APPLICATIONS = 'jobs/SET-JOB-APPLICATIONS';
 const SET_CURRENT = 'jobs/SET-CURRENT';
 const SET_PAGE = 'jobs/SET-PAGE';
 
 // Reducer
-export default function reducer(state = {}, action: Message<any> = {}) {
+export default function reducer(state: Jobs = {}, action: Message<any> = {}) : Jobs {
   switch (action.type) {
+    case SET_JOB_APPLICATIONS:
+      // Perform action
+      return {...state, currentApplications: action.payload};
     case SET_CURRENT:
       // Perform action
       return {...state, current: action.payload};
@@ -21,6 +25,10 @@ export default function reducer(state = {}, action: Message<any> = {}) {
 }
 
 // Action Creators
+export function setJobApplications(ja: JobApplication[]) : Message<JobApplication[]> {
+  return { type: SET_JOB_APPLICATIONS, payload: ja};
+}
+
 export function getNextPage() : Dispatcher {
   return (dispatch) => {
     Api.getNextJobsPage().then(jobsPage => {
@@ -64,6 +72,18 @@ export function fetchJob(id: string) : Dispatcher {
       .catch(err => dispatch(setError(err)))
   }
 }
+
+
+export function fetchJobApplicationsForUser(id: string) : Dispatcher {
+  return async (dispatch) => {
+    return Api.fetchJobApplications({creator_user_id: id})
+      .then((ja: JobApplication[]) => {
+        dispatch(setJobApplications(ja))
+      })
+      .catch(err => dispatch(setError(err)))
+  }
+}
+
 
 export function setCurrent(job: Job) : Message<Job> {
   return { type: SET_CURRENT, payload: job };

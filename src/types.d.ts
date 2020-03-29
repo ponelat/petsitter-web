@@ -40,10 +40,23 @@ export interface JobsPage {
   total_items?: number;
 }
 
-export interface Jobs {
-  jobsPage: JobsPage;
-  current?: Job;
+export interface JobApplication {
+  id?: string;
+  user_id: string;
+  job_id: string;
+  status: string;
 }
 
+export interface JobApplicationQueries {
+  job_id?: string;
+  creator_user_id?: string;
+  worker_user_id?: string;
+}
+
+export interface Jobs {
+  jobsPage?: JobsPage;
+  current?: Job;
+  currentApplications?: JobApplication[];
+}
 
 type Dispatcher = (dispatch: Function, getState: Function) => any

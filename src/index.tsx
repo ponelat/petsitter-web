@@ -20,7 +20,7 @@ const store = configureStore({
   user,
   error: {},
   jobs: {
-    jobsPage: {}
+    jobsPage: {},
   },
 })
 

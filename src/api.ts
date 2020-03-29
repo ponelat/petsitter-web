@@ -20,11 +20,13 @@ export class PetSitterAPI {
     this.password = ''
   }
 
-  headers() : Headers {
-    return new Headers({
+  headers(emptyBody?: boolean) : Headers {
+    const headers = new Headers({
       "Authorization": `Basic ${btoa(`${this.email}:${this.password}`)}`,
-      "Content-Type": 'application/json'
     })
+    if(!emptyBody)
+      headers.append("Content-Type", 'application/json')
+    return headers
   }
 
   async getUser(id: string) : Promise<User> {
@@ -47,6 +49,12 @@ export class PetSitterAPI {
     }).then((res: Response) => res.json())
   }
 
+  async deleteJob(id: string) : Promise<any> {
+    return fetch(`${this.url}/jobs/${id}`, {
+      method: 'DELETE',
+      headers: this.headers(true),
+    })
+  }
 
   async fetchJobApplictaions(jobId: string) : Promise<JobApplication[]> {
     return fetch(`${this.url}/jobs/${jobId}/applications`, {
@@ -81,8 +89,6 @@ export class PetSitterAPI {
   }
 
   async acceptDenyJobApplication(id: string, status: 'ACCEPTED' | 'DENIED') : Promise<any> {
-    console.log('id', id)
-
     return fetch(`${this.url}/job-applications/${id}`, {
       method: 'PUT',
       headers: this.headers(),

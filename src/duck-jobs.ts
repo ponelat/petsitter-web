@@ -64,6 +64,13 @@ export function updateJob(job: Job) : Dispatcher {
   }
 }
 
+
+export function deleteJob(id: string) : Dispatcher {
+  return async (dispatch) => {
+    return Api.deleteJob(id).catch(err => dispatch(setError(err)))
+  }
+}
+
 export function fetchJob(id: string) : Dispatcher {
   return async (dispatch) => {
     return Api.fetchJob(id)

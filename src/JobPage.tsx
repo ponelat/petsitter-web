@@ -2,7 +2,7 @@ import {Calendar, Form, FormField, Button, Box, Heading, Select, RadioButtonGrou
 import React, {useState, useEffect} from 'react'
 import { connect } from 'react-redux'
 import { navigate } from 'hookrouter'
-import { createJob, fetchJob, updateJob } from './duck-jobs'
+import { createJob, fetchJob, updateJob, deleteJob } from './duck-jobs'
 import { Job, RootState } from './types'
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
   job?: Job;
   createJob: Function;
   updateJob: Function;
+  deleteJob: Function;
   fetchJob: Function;
 }
 
@@ -105,7 +106,7 @@ export function JobPage(props: Props) {
     }
   }
 
-  const { fetchJob, jobId, job } = props
+  const { fetchJob, deleteJob, jobId, job } = props
 
   useEffect(() => {
     if(isEdit)
@@ -147,6 +148,12 @@ export function JobPage(props: Props) {
 
           <Box direction="row" justify="between" gap="medium" >
             <Button onClick={() => navigate('/jobs')} label="Back to Jobs"/>
+            <Button label="Delete" onClick={() => {
+              if(window.confirm("Do you want to remove this job?")) {
+                deleteJob(jobId)
+                navigate('/jobs')
+              }
+            }}/>
             <Button type="submit" primary label="Save"/>
           </Box>
         </Form>
@@ -163,5 +170,6 @@ export default connect((state: RootState) => {
 }, {
   createJob,
   updateJob,
+  deleteJob,
   fetchJob,
 })(JobPage)

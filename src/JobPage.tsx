@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { navigate } from 'hookrouter'
 import { createJob, fetchJob, updateJob, deleteJob } from './duck-jobs'
 import { Job, RootState } from './types'
+import SelectCheckboxes from './SelectCheckboxes'
 
 interface Props {
   jobId: string;
@@ -144,7 +145,7 @@ export function JobPage(props: Props) {
             />
           </FormField>
 
-          <FormField required name="activities" placeholder="Select one or more activites" label="Activities" multiple options={[ "walk", "dropin", "boarding", "sitting", "daycare"]} component={Select} />
+          <FormField required name="activities" placeholder="Select one or more activites" label="Activities" multiple options={[ "walk", "dropin", "boarding", "sitting", "daycare"]} component={SelectCheckboxes} />
 
           <Box direction="row" justify="between" gap="medium" >
             <Button onClick={() => navigate('/jobs')} label="Back to Jobs"/>

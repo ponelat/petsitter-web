@@ -1,7 +1,7 @@
 import React from 'react'
 import {Form, FormField, Button, Box, Heading } from 'grommet'
 import { navigate } from 'hookrouter'
-import SelectCheckboxes from './SelectCheckboxes'
+import SelectWithBoxes from './SelectWithBoxes'
 
 // import * as userActions from './redux/modules/user'
 
@@ -28,7 +28,7 @@ export default function Profile(props: Props) {
           <FormField name="fullName" label="Name" />
           <FormField name="password" label="Password" type="password" />
           <FormField name="email" label="Email" type="email"/>
-          <FormField defaultValue={['PetSitter']} name="roles" label="Roles" component={SelectCheckboxes} options={['PetSitter', 'PetOwner']} />
+          <FormField defaultValue={['PetSitter']} name="roles" multiple label="Roles" component={SelectWithBoxes} options={['PetSitter', 'PetOwner']} />
           <Button fill type="submit" primary label="Create User" />
         </Form>
       </Box>

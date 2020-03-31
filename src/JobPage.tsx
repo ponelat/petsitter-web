@@ -147,9 +147,9 @@ export function JobPage(props: Props) {
 
           <FormField required name="activities" placeholder="Select one or more activites" label="Activities" multiple options={[ "walk", "dropin", "boarding", "sitting", "daycare"]} component={SelectWithBoxes} />
 
-          <Box direction="row" justify="between" gap="medium" >
+          <Box justify="end" direction="row" gap="medium" >
             <Button onClick={() => navigate('/jobs')} label="Back to Jobs"/>
-            <Button label="Delete" onClick={() => {
+            <Button label="Delete" color="status-critical" onClick={() => {
               if(window.confirm("Do you want to remove this job?")) {
                 deleteJob(jobId)
                 navigate('/jobs')

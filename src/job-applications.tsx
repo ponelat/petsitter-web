@@ -19,12 +19,18 @@ export function JobApplicationsPage(props: Props) {
     fetchMyJobApplications()
   },[fetchMyJobApplications])
 
+  const acceptDenyJobApplicationThenReload = (...props: any[]) => {
+    acceptDenyJobApplication(...props).then(() => {
+      fetchMyJobApplications()
+    })
+  }
+
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
       <Heading level={3}>Pending Job Applications</Heading>
       <JobApplications
         jobApplications={jobApplications}
-        acceptDenyJobApplication={acceptDenyJobApplication}
+        acceptDenyJobApplication={acceptDenyJobApplicationThenReload}
       />
     </Box>
   )

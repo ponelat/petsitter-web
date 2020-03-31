@@ -29,7 +29,7 @@ interface JobRowProps {
 }
 function JobRow({job, deleteJob} : JobRowProps) {
 
-  const {id, dog, starts_at, ends_at} = job
+  const {id, dog, starts_at, ends_at, activities} = job
   const startsAtStr = formatDate(starts_at)
   const endsAtStr = formatDate(ends_at)
 
@@ -48,7 +48,7 @@ function JobRow({job, deleteJob} : JobRowProps) {
 
       <TableCell>{startsAtStr} to {endsAtStr}</TableCell>
 
-      <TableCell><A href="/jobs/1234">Details</A></TableCell>
+      <TableCell>{activities.join(',')}</TableCell>
 
       <TableCell gap="small" direction="row" >
         <Button label="Delete" color="status-critical" onClick={deleteJobWithAlert} />

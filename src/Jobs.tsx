@@ -1,15 +1,12 @@
 import React from 'react'
 import {Button, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
-import { A } from 'hookrouter'
-import { JobsPage, Job } from './types'
+import { A, navigate } from 'hookrouter'
+import { Job } from './types'
 
 
 interface Props {
-  jobsPage?: JobsPage
-}
-
-function applyTo(id: string) {
-
+  jobs?: Job[];
+  deleteJob: Function;
 }
 
 function formatDate(str: string) {
@@ -26,11 +23,17 @@ function duration(starts: string, ends: string) {
   return days + (days > 1 ? ' days' : ' day')
 }
 
-function JobRow(job: Job) {
+interface JobRowProps {
+  job: Job;
+  deleteJob: Function;
+}
+function JobRow({job, deleteJob} : JobRowProps) {
 
   const {id, dog, starts_at, ends_at} = job
   const startsAtStr = formatDate(starts_at)
   const endsAtStr = formatDate(ends_at)
+
+  const deleteJobWithAlert = () => window.confirm(`Are you sure you want to delete job #${id}`) ? deleteJob(id) : null
 
   return (
     <TableRow>
@@ -47,8 +50,9 @@ function JobRow(job: Job) {
 
       <TableCell><A href="/jobs/1234">Details</A></TableCell>
 
-      <TableCell>
-        <Button label="Apply" primary onClick={() => applyTo('1234')} />
+      <TableCell gap="small" direction="row" >
+        <Button label="Delete" color="status-critical" onClick={deleteJobWithAlert} />
+        <Button label="Edit" onClick={() => navigate(`/jobs/${id}`)} />
       </TableCell>
 
     </TableRow>
@@ -57,7 +61,7 @@ function JobRow(job: Job) {
 }
 
 export default function Jobs(props: Props) {
-  const jobs = props.jobsPage?.items || []
+  const { deleteJob, jobs=[] } = props
 
   return (
     <Table>
@@ -95,7 +99,7 @@ export default function Jobs(props: Props) {
           <TableRow><TableCell> No Jobs! </TableCell></TableRow>
         ) : null }
 
-        {jobs.map(job => <JobRow key={job.id} {...job}/>)}
+        {jobs.map(job => <JobRow key={job.id} job={job} deleteJob={deleteJob} />)}
 
       </TableBody>
     </Table>

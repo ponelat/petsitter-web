@@ -5,6 +5,7 @@ import Api from './api'
 import { JobsPage, Jobs, Job, JobApplication, JobApplicationStatus } from './types'
 
 // Actions
+const SET_MY_JOBS = 'jobs/SET-MY-JOBS';
 const SET_JOB_APPLICATIONS = 'jobs/SET-JOB-APPLICATIONS';
 const SET_CURRENT = 'jobs/SET-CURRENT';
 const SET_PAGE = 'jobs/SET-PAGE';
@@ -12,6 +13,9 @@ const SET_PAGE = 'jobs/SET-PAGE';
 // Reducer
 export default function reducer(state: Jobs = {}, action: Message<any> = {}) : Jobs {
   switch (action.type) {
+    case SET_MY_JOBS:
+      // Perform action
+      return {...state, myJobs: action.payload};
     case SET_JOB_APPLICATIONS:
       // Perform action
       return {...state, currentApplications: action.payload};
@@ -26,6 +30,10 @@ export default function reducer(state: Jobs = {}, action: Message<any> = {}) : J
 }
 
 // Action Creators
+export function setMyJobs(jobs: Job[]) : Message<Job[]> {
+  return { type: SET_MY_JOBS, payload: jobs };
+}
+
 export function setJobApplications(ja: JobApplication[]) : Message<JobApplication[]> {
   return { type: SET_JOB_APPLICATIONS, payload: ja};
 }
@@ -39,6 +47,18 @@ export function getNextPage() : Dispatcher {
     })
   }
 }
+
+
+export function getMyJobs() : Dispatcher {
+  return (dispatch) => {
+    Api.getMyJobs().then(jobs => {
+      dispatch(setMyJobs(jobs))
+    }).catch(err => {
+      dispatch(setError(err))
+    })
+  }
+}
+
 
 export function applyTo()  : Dispatcher {
   return (dispatch) => {

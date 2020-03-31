@@ -57,6 +57,7 @@ export interface JobApplicationQueries {
 
 export interface Jobs {
   jobsPage?: JobsPage;
+  myJobs?: Job[];
   current?: Job;
   currentApplications?: JobApplication[];
 }

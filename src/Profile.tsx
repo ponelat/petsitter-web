@@ -1,6 +1,5 @@
 import React from 'react'
 import {Form, FormField, Button, Box, Heading } from 'grommet'
-import { navigate } from 'hookrouter'
 import SelectWithBoxes from './SelectWithBoxes'
 
 // import * as userActions from './redux/modules/user'

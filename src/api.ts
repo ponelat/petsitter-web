@@ -84,14 +84,8 @@ export class PetSitterAPI {
     }).then((res: Response) => res.json())
   }
 
-  async fetchJobApplications({job_id, user_id}: JobApplicationQueries) : Promise<JobApplication[]> {
-    const query = new URLSearchParams()
-    if(job_id)
-      query.append('job_id', job_id)
-    if(user_id)
-      query.append('user_id', user_id)
-
-    return fetch(`${this.url}/job-applications?` + query.toString(), {
+  async fetchJobApplicationsForUser(user_id: string) : Promise<JobApplication[]> {
+    return fetch(`${this.url}/users/${user_id}/job-applications?`, {
       headers: this.headers(),
     }).then((res: Response) => res.json())
   }

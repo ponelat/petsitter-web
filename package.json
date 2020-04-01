@@ -2,7 +2,7 @@
   "name": "petsitter-web",
   "version": "0.1.0",
   "private": true,
-  "openapiUrl": "https://api.swaggerhub.com/apis/ponelat/pet-sitter/1.2",
+  "openapiUrl": "https://api.swaggerhub.com/apis/ponelat/pet-sitter/1.3",
   "proxy": "http://localhost:8080",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {Form, FormField, Button, Box, Heading } from 'grommet'
 import { navigate } from 'hookrouter'
 import { connect } from 'react-redux'

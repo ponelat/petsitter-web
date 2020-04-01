@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch'
-import { User, JobsPage, Job, JobApplication, JobApplicationQueries } from './types'
+import { User, JobsPage, Job, JobApplication } from './types'
 
 export class PetSitterAPI {
   url: string;

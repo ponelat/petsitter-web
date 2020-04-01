@@ -46,6 +46,18 @@ export function login(user: User) : Dispatcher {
   }
 }
 
+export function signup(user: User) : Dispatcher {
+  return async (dispatch) => {
+    return Api.createUser(user).then(() => {
+      Api.setSimpleToken(user.email, user.password)
+      dispatch(storeUser(user))
+    }).catch(err => {
+      dispatch(setError(err))
+      throw err
+    })
+  }
+}
+
 export function logout() : Dispatcher {
   return async (dispatch) => {
     Api.clearSimpleToken()

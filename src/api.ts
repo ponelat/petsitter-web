@@ -29,6 +29,16 @@ export class PetSitterAPI {
     return headers
   }
 
+  async createUser(user: User) : Promise<User> {
+    return fetch(`${this.url}/users`, {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'content-type': 'application/json',
+      },
+    }).then((res: Response) => res.json())
+  }
+
   async getUser(id: string) : Promise<User> {
     return fetch(`${this.url}/users/${id}`, {
       headers: this.headers()

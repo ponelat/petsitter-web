@@ -2,22 +2,29 @@ import React from 'react'
 import {Form, FormField, Button, Box, Heading } from 'grommet'
 import { navigate } from 'hookrouter'
 import { connect } from 'react-redux'
-import { login } from './duck-user'
+import { login, signup } from './duck-user'
 import Profile from './Profile'
 import { User } from './types'
 
-const signup = () => {}
-
 interface Props {
   login: Function;
+  signup : Function;
 }
 
 export function LoginPage(props: Props) {
 
+  const { signup, login } = props
+
   const onLogin = (form: any) => {
     const {email, password} : User = form.value
-    props.login({email,password})
+    login({email,password})
     navigate('/jobs')
+  }
+
+  const onSignup = (form: any) => {
+    signup(form.value).then(() => {
+      navigate('/jobs')
+    })
   }
 
   // const [roles, setRoles] = useState(['PetOwner'])
@@ -28,7 +35,7 @@ export function LoginPage(props: Props) {
   return (
     <Box gap="medium" direction="row" align="center" fill="horizontal" justify="center" >
 
-      <Profile onSave={signup} />
+      <Profile onSave={onSignup} />
 
       <Box background="light-2" pad="medium" width="medium" >
         <Heading level={3}>Login</Heading>

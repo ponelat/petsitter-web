@@ -24,7 +24,7 @@ export default function Profile(props: Props) {
           onSubmit={(form: any) => onSave(form)}
           onChange={(form: any) => console.log(JSON.stringify(form))} >
 
-          <FormField name="fullName" label="Name" />
+          <FormField name="full_name" label="Name" />
           <FormField name="password" label="Password" type="password" />
           <FormField name="email" label="Email" type="email"/>
           <FormField defaultValue={['PetSitter']} name="roles" multiple label="Roles" component={SelectWithBoxes} options={['PetSitter', 'PetOwner']} />

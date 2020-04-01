@@ -149,12 +149,14 @@ export function JobPage(props: Props) {
 
           <Box justify="end" direction="row" gap="medium" >
             <Button onClick={() => navigate('/jobs')} label="Back to Jobs"/>
-            <Button label="Delete" color="status-critical" onClick={() => {
-              if(window.confirm("Do you want to remove this job?")) {
-                deleteJob(jobId)
-                navigate('/jobs')
-              }
-            }}/>
+            {isEdit ? (
+              <Button label="Delete" color="status-critical" onClick={() => {
+                if(window.confirm("Do you want to remove this job?")) {
+                  deleteJob(jobId)
+                  navigate('/jobs')
+                }
+              }}/>
+            ) : null}
             <Button type="submit" primary label="Save"/>
           </Box>
         </Form>

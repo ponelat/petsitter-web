@@ -17,13 +17,14 @@ export function LoginPage(props: Props) {
 
   const onLogin = (form: any) => {
     const {email, password} : User = form.value
-    login({email,password})
-    navigate('/jobs')
+    login({email,password}).then(() => {
+      navigate('/')
+    })
   }
 
   const onSignup = (form: any) => {
     signup(form.value).then(() => {
-      navigate('/jobs')
+      navigate('/')
     })
   }
 

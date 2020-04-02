@@ -9,6 +9,7 @@ import SelectWithBoxes from './SelectWithBoxes'
 interface Props {
   jobId: string;
   job?: Job;
+  isNew?: boolean;
   createJob: Function;
   updateJob: Function;
   deleteJob: Function;
@@ -56,8 +57,8 @@ export function JobPage(props: Props) {
   let todayNextYear = new Date()
   todayNextYear.setFullYear(today.getFullYear() + 1)
   const todayNextYearStr = todayNextYear.toISOString()
-  const isEdit = props.jobId !== 'new'
 
+  const isEdit = props.isNew
 
   function onSelect(dates: any) {
 
@@ -97,12 +98,12 @@ export function JobPage(props: Props) {
     if(isEdit){
       props.updateJob(job)
         .then(() => {
-          navigate('/jobs')
+          navigate('/')
         })
     } else {
       props.createJob(job)
         .then(() => {
-          navigate('/jobs')
+          navigate('/')
         })
     }
   }
@@ -148,7 +149,7 @@ export function JobPage(props: Props) {
           <FormField required name="activities" placeholder="Select one or more activites" label="Activities" multiple options={[ "walk", "dropin", "boarding", "sitting", "daycare"]} component={SelectWithBoxes} />
 
           <Box justify="end" direction="row" gap="medium" >
-            <Button onClick={() => navigate('/jobs')} label="Back to Jobs"/>
+            <Button onClick={() => navigate('/jobs/mine')} label="Back to Jobs"/>
             {isEdit ? (
               <Button label="Delete" color="status-critical" onClick={() => {
                 if(window.confirm("Do you want to remove this job?")) {

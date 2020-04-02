@@ -40,7 +40,7 @@ const Home = (props: any) => {
   const path = usePath()
   if(path === '/') {
     if(props.user?.email) {
-      navigate('/jobs')
+      navigate('/jobs/mine')
     } else {
       navigate('/login')
     }
@@ -54,7 +54,7 @@ function App(props: Props) {
   const routes = {
     '/': () => <Home user={props.user}/>,
     '/login': () => <Login/>,
-    '/jobs': () => <JobsPageComponent/>,
+    '/jobs/mine': () => <JobsPageComponent/>,
     '/job-applications': () => <JobApplicationsPage/>,
     '/jobs/:id': ({id}: any) => <JobPage jobId={id} />,
     '/profile': () => <ProfilePage/>,

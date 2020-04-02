@@ -18,10 +18,11 @@ export default function reducer(state = {}, action: Message<any>) {
 
 export function getCurrentUser()  : Dispatcher {
   return (dispatch) => {
-    Api.getUser('@me').then((fetchedUser) => {
-      dispatch(storeUser(fetchedUser))
+    return Api.getUser('@me').then((fetchedUser) => {
+      return dispatch(storeUser(fetchedUser))
     }).catch(err => {
       dispatch(setError(err))
+      throw err
     })
   }
 }
@@ -37,12 +38,11 @@ export function setUser(user: User) : Message<User> {
   return { type: SET, payload: user }
 }
 
-
 // Async Actions
 export function login(user: User) : Dispatcher {
   return async (dispatch) => {
     Api.setSimpleToken(user.email, user.password)
-    dispatch(getCurrentUser())
+    return dispatch(getCurrentUser())
   }
 }
 
@@ -50,7 +50,7 @@ export function signup(user: User) : Dispatcher {
   return async (dispatch) => {
     return Api.createUser(user).then(() => {
       Api.setSimpleToken(user.email, user.password)
-      dispatch(storeUser(user))
+      return dispatch(storeUser(user))
     }).catch(err => {
       dispatch(setError(err))
       throw err

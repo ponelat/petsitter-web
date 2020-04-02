@@ -26,6 +26,7 @@ export function HeaderComp(props: any) {
           <Link href="/job-applications" label="Job Applications"/>
           <br/>
           <Link href="/jobs/new" label="New Job"/>
+          <Link href="/profile" label="Profile"/>
         </Nav>
         {full_name ? (
           <Box direction="row" align="center" gap="small">

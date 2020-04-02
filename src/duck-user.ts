@@ -58,6 +58,29 @@ export function signup(user: User) : Dispatcher {
   }
 }
 
+export function updateUser(user: User) : Dispatcher {
+  return async (dispatch) => {
+    return Api.updateUser(user).then(() => {
+      Api.setSimpleToken(user.email, user.password)
+      dispatch(storeUser(user))
+    }).catch((err: any) => {
+      dispatch(setError(err))
+      throw err
+    })
+  }
+}
+
+export function deleteUser(id: string = "@me") : Dispatcher {
+  return async (dispatch) => {
+    return Api.deleteUser(id).then(() => {
+      dispatch(logout())
+    }).catch((err: any) => {
+      dispatch(setError(err))
+      throw err
+    })
+  }
+}
+
 export function logout() : Dispatcher {
   return async (dispatch) => {
     Api.clearSimpleToken()

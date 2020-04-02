@@ -9,6 +9,7 @@ import JobsPageComponent from './JobsPage'
 import JobApplications from './job-applications'
 import JobPage from './JobPage'
 import Login from './Login'
+import ProfilePage from './ProfilePage'
 import ErrorComp from './ErrorComp'
 import { logout } from './duck-user'
 import { connect } from 'react-redux'
@@ -56,7 +57,7 @@ function App(props: Props) {
     '/jobs': () => <JobsPageComponent/>,
     '/job-applications': () => <JobApplications/>,
     '/jobs/:id': ({id}: any) => <JobPage jobId={id} />,
-    '/profile': () => <Box> Profile </Box>,
+    '/profile': () => <ProfilePage/>,
   } // End of Routes
 
   useInterceptor((currentPath: string, nextPath: string) => {

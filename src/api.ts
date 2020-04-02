@@ -39,6 +39,21 @@ export class PetSitterAPI {
     }).then((res: Response) => res.json())
   }
 
+  async updateUser(user: User) : Promise<User> {
+    return fetch(`${this.url}/users/@me`, {
+      method: 'PUT',
+      body: JSON.stringify(user),
+      headers: this.headers(),
+    }).then((res: Response) => res.json())
+  }
+
+  async deleteUser(id: string = '@me') : Promise<any> {
+    return fetch(`${this.url}/users/${id}`, {
+      method: 'DELETE',
+      headers: this.headers(true),
+    })
+  }
+
   async getUser(id: string) : Promise<User> {
     return fetch(`${this.url}/users/${id}`, {
       headers: this.headers()

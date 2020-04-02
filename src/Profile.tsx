@@ -9,15 +9,18 @@ import { User } from './types'
 interface Props {
   user?: User;
   onSave: Function;
+  onDelete?: Function;
 }
 
 export default function Profile(props: Props) {
-  const { onSave, user } = props
+  const { onSave, user, onDelete } = props
   const [formValue, setForm] = useState(user || {roles: ['PetOwner'], email: ''})
+
+  const isEdit = !!user
 
   return (
       <Box background="light-2" pad="medium" >
-        <Heading level={3}>Create User</Heading>
+        <Heading level={3}>{isEdit ? "Update User" : "Create User"}</Heading>
         <Form
           validate="blur"
           value={formValue}
@@ -29,7 +32,7 @@ export default function Profile(props: Props) {
             label="Name"
             onChange={(e) => {
               const full_name = e.target.value
-              const email = `${full_name.replace(/[^a-zA-Z0-9]+/g, '_')}@example.com`
+              const email = `${full_name.replace(/[^a-zA-Z0-9]+/g, '.')}@example.com`.toLowerCase()
               const newForm = {
                 ...formValue,
                 full_name,
@@ -61,7 +64,12 @@ export default function Profile(props: Props) {
                 return 'At least one role is required.'
             }}
           />
-          <Button fill type="submit" primary label="Create User" />
+          <Box gap="medium" direction="row" justify="between">
+            {isEdit && onDelete ? (
+              <Button color="status-critical" label="Delete" onClick={() => onDelete(user)}/>
+            ) : null}
+            <Button type="submit" primary label={isEdit ? "Save" : "Register"}/>
+          </Box>
         </Form>
       </Box>
   )

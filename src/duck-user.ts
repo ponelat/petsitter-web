@@ -4,6 +4,8 @@ import { setError }  from './duck-error'
 import Api from './api'
 
 const SET = 'user/SET'
+export const PET_SITTER = 'PetSitter'
+export const PET_OWNER = 'PetOwner'
 
 // Reducer
 export default function reducer(state = {}, action: Message<any>) {
@@ -12,6 +14,15 @@ export default function reducer(state = {}, action: Message<any>) {
       return action.payload
     default: return state
   }
+}
+
+// Queries
+export function isPetSitter(user: User) {
+  return user.roles?.includes(PET_SITTER)
+}
+
+export function isPetOwner(user: User) {
+  return user.roles?.includes(PET_OWNER)
 }
 
 // Action Creators

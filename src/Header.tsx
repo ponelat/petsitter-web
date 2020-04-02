@@ -1,8 +1,10 @@
 import React from 'react'
 import { Box, Heading, Header, Nav } from 'grommet'
 import { RootState, User } from './types'
+import { Add } from 'grommet-icons'
 import { connect } from 'react-redux'
 import { navigate, setLinkProps } from 'hookrouter'
+import { isPetOwner } from './duck-user'
 import Link from './Link'
 import Avatar from './Avatar'
 
@@ -12,20 +14,24 @@ import Avatar from './Avatar'
 
 export function HeaderComp(props: any) {
 
-  const { full_name } : User = props.user
+  const { user } = props
+  const { full_name } = user
 
   return (
     <Box>
       <Heading onClick={() => navigate('/')} style={{display: 'inline-block'}} textAlign="center" size="medium">
-        PetSitter
+        PetSitter API
       </Heading>
 
       <Header background="brand" pad="small">
         <Nav background="brand" direction="row" pad="small">
-          <Link href="/jobs" label="Jobs"/>
-          <Link href="/job-applications" label="Job Applications"/>
+          <Link href="/jobs" label="All Jobs"/>
+          <Link href="/jobs/my" label="My Jobs"/>
+          <Link href="/job-applications" label="My Job Applications"/>
           <br/>
-          <Link href="/jobs/new" label="New Job"/>
+          {isPetOwner(user) ? (
+            <Link href="/jobs/new" label={ <span><Add size="small"/> New Job</span>}/>
+          ) : null}
           <Link href="/profile" label="Profile"/>
         </Nav>
         {full_name ? (

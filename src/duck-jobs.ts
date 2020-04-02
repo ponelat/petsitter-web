@@ -102,9 +102,8 @@ export function fetchJob(id: string) : Dispatcher {
 }
 
 export function fetchMyJobApplications() : Dispatcher {
-  return async (dispatch, getState) => {
-    const user_id = userId(getState)
-    return Api.fetchJobApplicationsForUser(user_id)
+  return async (dispatch) => {
+    return Api.fetchMyJobApplications()
       .then((ja: JobApplication[]) => {
         dispatch(setJobApplications(ja))
       })

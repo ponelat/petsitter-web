@@ -109,8 +109,8 @@ export class PetSitterAPI {
     }).then((res: Response) => res.json())
   }
 
-  async fetchJobApplicationsForUser(user_id: string) : Promise<JobApplication[]> {
-    return fetch(`${this.url}/users/${user_id}/job-applications?`, {
+  async fetchMyJobApplications() : Promise<JobApplication[]> {
+    return fetch(`${this.url}/users/@me/job-applications`, {
       headers: this.headers(),
     }).then((res: Response) => res.json())
   }

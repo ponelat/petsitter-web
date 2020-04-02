@@ -6,7 +6,7 @@ import { Grommet, Grid, Main, Box, Heading } from 'grommet'
 
 import Header from './Header'
 import JobsPageComponent from './JobsPage'
-import JobApplications from './job-applications'
+import JobApplicationsPage from './JobApplicationsPage'
 import JobPage from './JobPage'
 import Login from './Login'
 import ProfilePage from './ProfilePage'
@@ -55,7 +55,7 @@ function App(props: Props) {
     '/': () => <Home user={props.user}/>,
     '/login': () => <Login/>,
     '/jobs': () => <JobsPageComponent/>,
-    '/job-applications': () => <JobApplications/>,
+    '/job-applications': () => <JobApplicationsPage/>,
     '/jobs/:id': ({id}: any) => <JobPage jobId={id} />,
     '/profile': () => <ProfilePage/>,
   } // End of Routes

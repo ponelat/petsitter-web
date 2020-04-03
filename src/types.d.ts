@@ -33,6 +33,8 @@ export interface Job {
   description: string;
   starts_at: string;
   ends_at: string;
+  creator_user_id?: string;
+  worker_user_id?: string;
 }
 
 export type JobApplicationStatus = 'DENIED' | 'ACCEPTED'

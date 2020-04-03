@@ -1,12 +1,16 @@
 import React from 'react'
 import {Button, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
 import { A, navigate } from 'hookrouter'
-import { Job } from './types'
+import { hasPetSitterRole } from './duck-user'
+import { Job, User } from './types'
 
 
 interface Props {
   jobs?: Job[];
   deleteJob: Function;
+  applyToJob: Function;
+  editJob: Function;
+  user: User;
 }
 
 function formatDate(str: string) {
@@ -26,14 +30,26 @@ function duration(starts: string, ends: string) {
 interface JobRowProps {
   job: Job;
   deleteJob: Function;
+  editJob: Function;
+  applyToJob: Function;
+  user: User;
 }
-function JobRow({job, deleteJob} : JobRowProps) {
 
-  const {id, dog, starts_at, ends_at, activities} = job
+function JobRow({job, deleteJob, applyToJob, editJob, user} : JobRowProps) {
+
+  const {id, dog, starts_at, ends_at, activities, creator_user_id, worker_user_id } = job
   const startsAtStr = formatDate(starts_at)
   const endsAtStr = formatDate(ends_at)
 
-  const deleteJobWithAlert = () => window.confirm(`Are you sure you want to delete job #${id}`) ? deleteJob(id) : null
+  const withConfirm = (msg: string, action: Function, ...args: any[]) => () => {
+    if(window.confirm(msg)) {
+      action(...args)
+    }
+  }
+
+  const isOwner = creator_user_id === user.id
+  const isPetSitter = hasPetSitterRole(user)
+  const alreadyApplied = worker_user_id === user.id
 
   return (
     <TableRow>
@@ -51,8 +67,15 @@ function JobRow({job, deleteJob} : JobRowProps) {
       <TableCell>{activities.join(',')}</TableCell>
 
       <TableCell gap="small" direction="row" >
-        <Button label="Delete" color="status-critical" onClick={deleteJobWithAlert} />
-        <Button label="Edit" onClick={() => navigate(`/jobs/${id}`)} />
+        {isOwner ? (
+          <>
+            <Button label="Edit" onClick={() => navigate(`/jobs/${id}`)} />
+            <Button label="Delete" color="status-critical" onClick={withConfirm(`Are you sure you want to delete job #${id}`, deleteJob, id)} />
+          </>
+        ) : null }
+        {isPetSitter ? (
+          <Button label="Apply" disabled={alreadyApplied} primary onClick={withConfirm("Are you sure you want to apply to this Job?", applyToJob, id)} />
+        ) : null }
       </TableCell>
 
     </TableRow>
@@ -61,7 +84,7 @@ function JobRow({job, deleteJob} : JobRowProps) {
 }
 
 export default function Jobs(props: Props) {
-  const { deleteJob, jobs=[] } = props
+  const { deleteJob, applyToJob, editJob,  user, jobs=[] } = props
 
   return (
     <Table>
@@ -99,7 +122,14 @@ export default function Jobs(props: Props) {
           <TableRow><TableCell> No Jobs! </TableCell></TableRow>
         ) : null }
 
-        {jobs.map(job => <JobRow key={job.id} job={job} deleteJob={deleteJob} />)}
+        {jobs.map(job => <JobRow
+                           key={job.id}
+                           job={job}
+                           editJob={editJob}
+                           deleteJob={deleteJob}
+                           applyToJob={applyToJob}
+                           user={user}
+                         />)}
 
       </TableBody>
     </Table>

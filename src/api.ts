@@ -125,6 +125,16 @@ export class PetSitterAPI {
     }).then((res: Response) => res.json())
   }
 
+  async applyToJob(id: string) : Promise<any> {
+    return fetch(`${this.url}/jobs/${id}/job-applications`, {
+      method: 'POST',
+      headers: this.headers(),
+      body: JSON.stringify({
+        status: "APPLYING"
+      }),
+    }).then((res: Response) => res.json())
+  }
+
 }
 
 const instance = new PetSitterAPI('')

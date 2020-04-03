@@ -59,16 +59,10 @@ export function getMyJobs() : Dispatcher {
   }
 }
 
-
-export function applyTo()  : Dispatcher {
-  return (dispatch) => {
-
-  }
-}
-
-export function findById()  : Dispatcher {
-  return (dispatch) => {
-
+export function applyToJob(id: string)  : Dispatcher {
+  return async (dispatch) => {
+    return Api.applyToJob(id)
+      .catch(err => dispatch(setError(err)))
   }
 }
 
@@ -118,9 +112,6 @@ export function acceptDenyJobApplication(id: string,  status: JobApplicationStat
       .catch(err => dispatch(setError(err)))
   }
 }
-
-
-
 
 export function setCurrent(job: Job) : Message<Job> {
   return { type: SET_CURRENT, payload: job };

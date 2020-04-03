@@ -58,7 +58,7 @@ export function JobPage(props: Props) {
   todayNextYear.setFullYear(today.getFullYear() + 1)
   const todayNextYearStr = todayNextYear.toISOString()
 
-  const isEdit = props.isNew
+  const isEdit = !props.isNew
 
   function onSelect(dates: any) {
 

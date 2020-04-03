@@ -3,45 +3,50 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Jobs from './Jobs'
 import { navigate } from 'hookrouter'
-import { RootState, Job } from './types'
-import { deleteJob, getMyJobs} from './duck-jobs'
+import { RootState, JobsPage, User } from './types'
+import { getNextPage, deleteJob, applyToJob } from './duck-jobs'
 
 interface Props {
-  myJobs?: Job[];
-  getMyJobs: Function;
+  jobsPage?: JobsPage;
+  user: User;
+  getNextPage: Function;
   deleteJob: Function;
+  applyToJob: Function;
 }
 
 export function JobsPageComponent(props: Props) {
 
-  const { myJobs, getMyJobs, deleteJob} = props
+  const { jobsPage, getNextPage, applyToJob, deleteJob, user } = props
+  const jobs = jobsPage?.items
+
+  const editJob = (id: string) => navigate(`/jobs/${id}`)
 
   useEffect(() => {
-    getMyJobs()
-  },[getMyJobs])
-
-  const deleteThenReloadJobs = (id: string) => {
-    deleteJob(id).then(() => {
-      getMyJobs()
-    })
-  }
+    getNextPage()
+  },[getNextPage])
 
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
-      <Heading level={3}>My Jobs</Heading>
+      <Heading level={3}>All Jobs</Heading>
 
-      <Jobs jobs={myJobs} deleteJob={deleteThenReloadJobs}/>
-
-      <Button onClick={() => navigate('/jobs/new')} label="Create Job" primary />
+      <Jobs
+        jobs={jobs}
+        user={user}
+        applyToJob={applyToJob}
+        deleteJob={deleteJob}
+        editJob={editJob}
+      />
     </Box>
   )
 }
 
 export default connect((state: RootState) => {
   return {
-    myJobs: state.jobs.myJobs,
+    jobsPage: state.jobs.jobsPage,
+    user: state.user,
   }
 }, {
-  getMyJobs,
+  getNextPage,
   deleteJob,
+  applyToJob,
 })(JobsPageComponent)

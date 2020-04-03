@@ -4,7 +4,7 @@ import { RootState, User } from './types'
 import { Add } from 'grommet-icons'
 import { connect } from 'react-redux'
 import { navigate, setLinkProps } from 'hookrouter'
-import { isPetOwner } from './duck-user'
+import { hasPetOwnerRole } from './duck-user'
 import Link from './Link'
 import Avatar from './Avatar'
 
@@ -26,11 +26,11 @@ export function HeaderComp(props: any) {
       <Header background="brand" pad="small">
         <Nav background="brand" direction="row" pad="small">
           <Link href="/jobs" label="All Jobs"/>
-          <Link href="/jobs/my" label="My Jobs"/>
+          <Link href="/jobs/mine" label="My Jobs"/>
           <Link href="/job-applications" label="My Job Applications"/>
           <br/>
-          {isPetOwner(user) ? (
-            <Link href="/jobs/new" label={ <span><Add size="small"/> New Job</span>}/>
+          {hasPetOwnerRole(user) ? (
+            <Link href="/jobs/new" label={ <span><Add size="small" /> New Job</span>}/>
           ) : null}
           <Link href="/profile" label="Profile"/>
         </Nav>

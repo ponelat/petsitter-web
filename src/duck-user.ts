@@ -17,11 +17,11 @@ export default function reducer(state = {}, action: Message<any>) {
 }
 
 // Queries
-export function isPetSitter(user: User) {
+export function hasPetSitterRole(user: User) {
   return user.roles?.includes(PET_SITTER)
 }
 
-export function isPetOwner(user: User) {
+export function hasPetOwnerRole(user: User) {
   return user.roles?.includes(PET_OWNER)
 }
 
@@ -59,9 +59,9 @@ export function login(user: User) : Dispatcher {
 
 export function signup(user: User) : Dispatcher {
   return async (dispatch) => {
-    return Api.createUser(user).then(() => {
-      Api.setSimpleToken(user.email, user.password)
-      return dispatch(storeUser(user))
+    return Api.createUser(user).then((fetchedUser) => {
+      Api.setSimpleToken(fetchedUser.email, user.password)
+      return dispatch(storeUser(fetchedUser))
     }).catch(err => {
       dispatch(setError(err))
       throw err
@@ -71,9 +71,9 @@ export function signup(user: User) : Dispatcher {
 
 export function updateUser(user: User) : Dispatcher {
   return async (dispatch) => {
-    return Api.updateUser(user).then(() => {
-      Api.setSimpleToken(user.email, user.password)
-      dispatch(storeUser(user))
+    return Api.updateUser(user).then((fetchedUser) => {
+      Api.setSimpleToken(fetchedUser.email, user.password)
+      dispatch(storeUser(fetchedUser))
     }).catch((err: any) => {
       dispatch(setError(err))
       throw err

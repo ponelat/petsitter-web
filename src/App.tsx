@@ -5,7 +5,8 @@ import {usePath, navigate, useRoutes, useInterceptor} from 'hookrouter';
 import { Grommet, Grid, Main, Box, Heading } from 'grommet'
 
 import Header from './Header'
-import JobsPageComponent from './JobsPage'
+import MyJobsPage from './MyJobsPage'
+import JobsPage from './JobsPage'
 import JobApplicationsPage from './JobApplicationsPage'
 import JobPage from './JobPage'
 import Login from './Login'
@@ -50,11 +51,11 @@ const Home = (props: any) => {
 
 function App(props: Props) {
 
-
   const routes = {
     '/': () => <Home user={props.user}/>,
     '/login': () => <Login/>,
-    '/jobs/mine': () => <JobsPageComponent/>,
+    '/jobs': () => <JobsPage/>,
+    '/jobs/mine': () => <MyJobsPage/>,
     '/job-applications': () => <JobApplicationsPage/>,
     '/jobs/:id': ({id}: any) => <JobPage jobId={id} />,
     '/profile': () => <ProfilePage/>,

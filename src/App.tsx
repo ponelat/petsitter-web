@@ -3,6 +3,7 @@ import { createGlobalStyle } from 'styled-components'
 import {usePath, navigate, useRoutes, useInterceptor} from 'hookrouter';
 
 import { Grommet, Grid, Main, Box, Heading } from 'grommet'
+import { Notification } from 'grommet-controls'
 
 import Header from './Header'
 import MyJobsPage from './MyJobsPage'
@@ -11,7 +12,7 @@ import JobApplicationsPage from './JobApplicationsPage'
 import JobPage from './JobPage'
 import Login from './Login'
 import ProfilePage from './ProfilePage'
-import ErrorComp from './ErrorComp'
+import Notifications from './Notifications'
 import { logout } from './duck-user'
 import { connect } from 'react-redux'
 import {RootState, User} from './types'
@@ -21,8 +22,6 @@ const GlobalStyle = createGlobalStyle`
     min-height: 100vh;
   }
 `
-
-
 
 const theme = {
 
@@ -54,10 +53,16 @@ function App(props: Props) {
   const routes = {
     '/': () => <Home user={props.user}/>,
     '/login': () => <Login/>,
+    '/logout': () => {
+      props.logout()
+      navigate('/')
+      return null
+    },
     '/jobs': () => <JobsPage/>,
     '/jobs/mine': () => <MyJobsPage/>,
     '/job-applications': () => <JobApplicationsPage/>,
     '/jobs/:id': ({id}: any) => <JobPage jobId={id} />,
+    '/jobs/new': () => <JobPage />,
     '/profile': () => <ProfilePage/>,
   } // End of Routes
 
@@ -74,7 +79,9 @@ function App(props: Props) {
   return (
     <>
       <GlobalStyle/>
+
       <Grommet plain theme={theme}>
+        <Notifications />
         <Grid
           style={{'minHeight': '100vh'}}
           rows={['200px', '1fr', 'xsmall']}
@@ -86,10 +93,11 @@ function App(props: Props) {
             { name: 'footer', start: [0, 2], end: [1, 2] },
           ]}
         >
+
           <Box gridArea="header">
             <Header/>
-            <ErrorComp/>
           </Box>
+
           <Main gridArea="main" direction="row" alignContent="end" gap="small" >
             {route || <PageNotFound/>}
           </Main>

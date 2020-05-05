@@ -13,7 +13,7 @@ interface Props {
   createJob: Function;
   updateJob: Function;
   deleteJob: Function;
-  fetchJob: Function;
+  fetchJob: (id: string) => Promise<Job>;
 }
 
 interface JobForm {
@@ -53,7 +53,7 @@ function jobToForm(job?: Job) : JobForm {
 
 export function JobPage(props: Props) {
   const { fetchJob, deleteJob, jobId, job } = props
-  const isEdit = !jobId
+  const isEdit = !!jobId
 
   const today = new Date()
   const todayStr = today.toISOString()
@@ -71,7 +71,6 @@ export function JobPage(props: Props) {
       }
     }
   }
-
 
   function onSubmit(form: any) {
     const [starts_at, ends_at] = startsEnds
@@ -97,7 +96,7 @@ export function JobPage(props: Props) {
     }
 
     if(isEdit){
-      props.updateJob(job)
+      props.updateJob(jobId, job)
         .then(() => {
           navigate('/')
         })
@@ -110,25 +109,30 @@ export function JobPage(props: Props) {
   }
 
 
-  useEffect(() => {
-    if(isEdit) {
-      fetchJob(jobId)
-    }
-  }, [fetchJob, jobId, isEdit])
-
   const [startsEnds, setStartsEnds] = useState([
     props.job?.starts_at || todayStr,
     props.job?.ends_at   || todayStr
   ])
 
   const [formValue, setForm] = useState(jobToForm(props.job))
-  useEffect(() => setForm(jobToForm(job)), [job])
+
+  useEffect(() => {
+    if(isEdit && jobId) {
+      fetchJob(jobId).then(job => {
+        setForm(jobToForm(job))
+      })
+    }
+  }, [fetchJob, jobId, isEdit])
 
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
       <Box background="light-2" pad="medium" width="large" >
         <Heading level={3}>{isEdit ? "Edit Job" : "Create new Job"}</Heading>
-        <Form validate="blur" onSubmit={onSubmit} value={formValue} onChange={(form: any) => setForm(form.value)}>
+        <Form
+          validate="blur"
+          onSubmit={onSubmit}
+          value={formValue}
+          onChange={(form: any) => setForm(form.value)}>
 
           <FormField required name="name" label="Dog name"  />
           <FormField required name="breed" label="Dog breed"  />
@@ -170,7 +174,6 @@ export function JobPage(props: Props) {
 
 export default connect((state: RootState) => {
   return {
-    job: state.jobs.current
   }
 }, {
   createJob,

@@ -30,7 +30,7 @@ export function HeaderComp(props: any) {
           <Link href="/job-applications" label="My Job Applications"/>
           <br/>
           {hasPetOwnerRole(user) ? (
-            <Link href="/jobs/new" label={ <span><Add size="small" /> New Job</span>}/>
+            <Link href="/jobs-new" label={ <span><Add size="small" /> New Job</span>}/>
           ) : null}
           <Link href="/profile" label="Profile"/>
         </Nav>

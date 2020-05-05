@@ -72,9 +72,9 @@ export function createJob(job: Job) : Dispatcher {
   }
 }
 
-export function updateJob(job: Job) : Dispatcher {
+export function updateJob(jobId: string, job: Job) : Dispatcher {
   return async (dispatch) => {
-    return Api.updateJob(job).catch(err => dispatch(setError(err)))
+    return Api.updateJob(jobId, job).catch(err => dispatch(setError(err)))
   }
 }
 
@@ -90,6 +90,7 @@ export function fetchJob(id: string) : Dispatcher {
     return Api.fetchJob(id)
       .then((job: Job) => {
         dispatch(setCurrent(job))
+        return job
       })
       .catch(err => dispatch(setError(err)))
   }

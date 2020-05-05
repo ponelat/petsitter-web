@@ -42,7 +42,7 @@ export function JobsPageComponent(props: Props) {
       />
 
     {hasPetOwnerRole(user) ? (
-        <Button onClick={() => navigate('/jobs/new')} label="Create Job" primary />
+        <Button onClick={() => navigate('/jobs-new')} label="Create Job" primary />
     ) : null}
     </Box>
   )

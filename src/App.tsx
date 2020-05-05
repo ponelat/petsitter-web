@@ -61,8 +61,8 @@ function App(props: Props) {
     '/jobs': () => <JobsPage/>,
     '/jobs/mine': () => <MyJobsPage/>,
     '/job-applications': () => <JobApplicationsPage/>,
+    '/jobs-new': () => <JobPage />,
     '/jobs/:id': ({id}: any) => <JobPage jobId={id} />,
-    '/jobs/new': () => <JobPage />,
     '/profile': () => <ProfilePage/>,
   } // End of Routes
 

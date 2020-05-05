@@ -84,8 +84,8 @@ export class PetSitterAPI {
   }
 
 
-  async updateJob(job: Job) : Promise<Job> {
-    return fetch(`${this.url}/jobs/${job.id}`, {
+  async updateJob(jobId: string, job: Job) : Promise<Job> {
+    return fetch(`${this.url}/jobs/${jobId}`, {
       method: 'PUT',
       body: JSON.stringify(job),
       headers: this.headers(),

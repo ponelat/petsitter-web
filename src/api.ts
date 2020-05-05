@@ -1,6 +1,9 @@
 import fetch from 'isomorphic-fetch'
 import { User, JobsPage, Job, JobApplication } from './types'
 
+// @me - a magic ID that refers to the user idenitifed by the Authorization header
+const ME = '%40me'
+
 export class PetSitterAPI {
   url: string;
   email?: string;
@@ -29,25 +32,25 @@ export class PetSitterAPI {
     return headers
   }
 
-  async createUser(user: User) : Promise<User> {
+  async createUser(user: User) : Promise<Response> {
     return fetch(`${this.url}/users`, {
       method: 'POST',
       body: JSON.stringify(user),
       headers: {
         'content-type': 'application/json',
       },
-    }).then((res: Response) => res.json())
+    })
   }
 
   async updateUser(user: User) : Promise<User> {
-    return fetch(`${this.url}/users/@me`, {
+    return fetch(`${this.url}/users/${ME}`, {
       method: 'PUT',
       body: JSON.stringify(user),
       headers: this.headers(),
     }).then((res: Response) => res.json())
   }
 
-  async deleteUser(id: string = '@me') : Promise<any> {
+  async deleteUser(id: string = ME) : Promise<any> {
     return fetch(`${this.url}/users/${id}`, {
       method: 'DELETE',
       headers: this.headers(true),
@@ -68,7 +71,7 @@ export class PetSitterAPI {
 
 
   async getMyJobs() : Promise<Job[]> {
-    return fetch(`${this.url}/users/@me/jobs`, {
+    return fetch(`${this.url}/users/${ME}/jobs`, {
       headers: this.headers()
     }).then((res: Response) => res.json())
   }
@@ -110,7 +113,7 @@ export class PetSitterAPI {
   }
 
   async fetchMyJobApplications() : Promise<JobApplication[]> {
-    return fetch(`${this.url}/users/@me/job-applications`, {
+    return fetch(`${this.url}/users/${ME}/job-applications`, {
       headers: this.headers(),
     }).then((res: Response) => res.json())
   }

@@ -5,6 +5,7 @@ import Jobs from './Jobs'
 import { navigate } from 'hookrouter'
 import { RootState, Job, User } from './types'
 import { deleteJob, getMyJobs, applyToJob } from './duck-jobs'
+import {hasPetOwnerRole} from './duck-user'
 
 interface Props {
   myJobs?: Job[];
@@ -40,7 +41,9 @@ export function JobsPageComponent(props: Props) {
         applyToJob={applyToJob}
       />
 
-      <Button onClick={() => navigate('/jobs/new')} label="Create Job" primary />
+    {hasPetOwnerRole(user) ? (
+        <Button onClick={() => navigate('/jobs/new')} label="Create Job" primary />
+    ) : null}
     </Box>
   )
 }

@@ -37,7 +37,7 @@ interface JobRowProps {
 
 function JobRow({job, deleteJob, applyToJob, editJob, user} : JobRowProps) {
 
-  const {id, dog, starts_at, ends_at, activities, creator_user_id, worker_user_id } = job
+  const {id, dog, starts_at, ends_at, activities=[], creator_user_id, worker_user_id } = job
   const startsAtStr = formatDate(starts_at)
   const endsAtStr = formatDate(ends_at)
 

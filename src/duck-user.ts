@@ -4,8 +4,8 @@ import { setError }  from './duck-error'
 import Api from './api'
 
 const SET = 'user/SET'
-export const PET_SITTER = 'PetSitter'
-export const PET_OWNER = 'PetOwner'
+const PET_SITTER = 'PetSitter'
+const PET_OWNER = 'PetOwner'
 
 // Reducer
 export default function reducer(state = {}, action: Message<any>) {
@@ -39,7 +39,11 @@ export function getCurrentUser()  : Dispatcher {
 }
 
 export function storeUser(user: User) : Dispatcher {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const existingUser = getState().user || <User> JSON.parse(localStorage.getItem('user') || '{}')
+    // Keep the password when we're updating the user
+    if(existingUser.password && !user.password)
+      user.password = existingUser.password
     localStorage.setItem('user', JSON.stringify(user))
     dispatch(setUser(user))
   }
@@ -53,15 +57,16 @@ export function setUser(user: User) : Message<User> {
 export function login(user: User) : Dispatcher {
   return async (dispatch) => {
     Api.setSimpleToken(user.email, user.password)
+    dispatch(setUser(user))
     return dispatch(getCurrentUser())
   }
 }
 
 export function signup(user: User) : Dispatcher {
   return async (dispatch) => {
-    return Api.createUser(user).then((fetchedUser) => {
-      Api.setSimpleToken(fetchedUser.email, user.password)
-      return dispatch(storeUser(fetchedUser))
+    return Api.createUser(user).then(() => {
+      Api.setSimpleToken(user.email, user.password)
+      return dispatch(storeUser(user))
     }).catch(err => {
       dispatch(setError(err))
       throw err

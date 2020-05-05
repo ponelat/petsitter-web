@@ -7,7 +7,7 @@ import { Job, RootState } from './types'
 import SelectWithBoxes from './SelectWithBoxes'
 
 interface Props {
-  jobId: string;
+  jobId?: string;
   job?: Job;
   isNew?: boolean;
   createJob: Function;
@@ -52,13 +52,14 @@ function jobToForm(job?: Job) : JobForm {
 }
 
 export function JobPage(props: Props) {
+  const { fetchJob, deleteJob, jobId, job } = props
+  const isEdit = !jobId
+
   const today = new Date()
   const todayStr = today.toISOString()
   let todayNextYear = new Date()
   todayNextYear.setFullYear(today.getFullYear() + 1)
   const todayNextYearStr = todayNextYear.toISOString()
-
-  const isEdit = !props.isNew
 
   function onSelect(dates: any) {
 
@@ -108,11 +109,11 @@ export function JobPage(props: Props) {
     }
   }
 
-  const { fetchJob, deleteJob, jobId, job } = props
 
   useEffect(() => {
-    if(isEdit)
+    if(isEdit) {
       fetchJob(jobId)
+    }
   }, [fetchJob, jobId, isEdit])
 
   const [startsEnds, setStartsEnds] = useState([

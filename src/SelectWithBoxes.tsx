@@ -10,7 +10,7 @@ interface SelectWithBoxesProps {
 }
 
 export default function SelectWithBoxes (props: SelectWithBoxesProps) {
-  const { options, onChange, value, multiple, name="" } = props
+  const { options, onChange, value=[], multiple, name="" } = props
 
   const onCheckboxChange = (e: any, label: string) => {
     const { checked } = e.target
@@ -32,7 +32,7 @@ export default function SelectWithBoxes (props: SelectWithBoxesProps) {
     <Box direction="row" gap="small" pad="small">
       {
         multiple ? options.map( (option) => {
-        const checked = value.includes(option)
+          const checked = (value || '').includes(option)
          return (
            <CheckBox
              key={option+''}

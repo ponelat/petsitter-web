@@ -24,7 +24,8 @@ export default function Profile(props: Props) {
         <Form
           validate="blur"
           value={formValue}
-          onSubmit={(form: any) => onSave(form)} >
+          onChange={(form: any) => setForm(form)}
+          onSubmit={(form: any) => onSave(form.value)} >
 
           <FormField
             required

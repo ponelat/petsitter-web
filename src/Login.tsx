@@ -23,15 +23,10 @@ export function LoginPage(props: Props) {
   }
 
   const onSignup = (form: any) => {
-    signup(form.value).then(() => {
+    signup(form).then(() => {
       navigate('/')
     })
   }
-
-  // const [roles, setRoles] = useState(['PetOwner'])
-  // const [form, setForm] = useState({
-  //   roles
-  // })
 
   return (
     <Box gap="medium" direction="row" align="center" fill="horizontal" justify="center" >

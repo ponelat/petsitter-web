@@ -43,9 +43,16 @@ export class PetSitterAPI {
   }
 
   async updateUser(user: User) : Promise<User> {
+    const writeableUser: User = {
+      email: user.email,
+      full_name: user.full_name,
+      password: user.password,
+      roles: user.roles,
+    }
+
     return fetch(`${this.url}/users/${ME}`, {
       method: 'PUT',
-      body: JSON.stringify(user),
+      body: JSON.stringify(writeableUser),
       headers: this.headers(),
     }).then((res: Response) => res.json())
   }

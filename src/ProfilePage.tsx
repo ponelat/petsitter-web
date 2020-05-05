@@ -17,7 +17,7 @@ export function ProfilePage(props: Props) {
   const { user, updateUser, deleteUser } = props
 
   const onSave = (form: any) => {
-    updateUser(form.value).then(() => {
+    updateUser(form).then(() => {
       navigate('/')
     })
   }

@@ -33,7 +33,6 @@ export function getCurrentUser()  : Dispatcher {
       return dispatch(storeUser(fetchedUser))
     }).catch(err => {
       dispatch(setError(err))
-      throw err
     })
   }
 }

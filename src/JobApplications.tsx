@@ -1,18 +1,24 @@
 import React from 'react'
 import {Button, Box, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
 import { A } from 'hookrouter'
-import { JobApplication } from './types'
+import { JobApplication, User } from './types'
 
-
-interface RowProps extends JobApplication {
+interface JobApplicationRowProps {
+  jobApplication: JobApplication;
   key: string;
   deny: Function;
   accept: Function;
+  deleteJobApplication: Function;
+  user: User;
 }
 
-export function JobApplicationRow(jobApplication: RowProps) {
+export function JobApplicationRow(rowProps: JobApplicationRowProps) {
 
-  const {job_id, status, deny, accept} = jobApplication
+  const {jobApplication, deny, accept, deleteJobApplication, user} = rowProps
+  const { job_id, user_id, status} = jobApplication
+
+  // Hacky
+  const isOwner = user_id !== user.id
 
   return (
     <TableRow>
@@ -24,8 +30,16 @@ export function JobApplicationRow(jobApplication: RowProps) {
       <TableCell>{status}</TableCell>
 
       <TableCell gap="small" direction="row">
-        <Button label="Accept" primary onClick={() => accept()} />
-        <Button label="Deny" onClick={() => deny()} />
+      {isOwner ? (
+        <Box direction="row" gap="small">
+          <Button label="Accept" primary onClick={() => accept()} />
+          <Button label="Deny" onClick={() => deny()} />
+        </Box>
+      ) : (
+        <Box direction="row" gap="small">
+          <Button label="Cancel" color='status-critical' onClick={() => deleteJobApplication()} />
+        </Box>
+      )}
       </TableCell>
 
     </TableRow>
@@ -37,10 +51,12 @@ export function JobApplicationRow(jobApplication: RowProps) {
 interface Props {
   jobApplications?: JobApplication[];
   acceptDenyJobApplication: Function;
+  deleteJobApplication: (jobId: string) => void;
+  user: User;
 }
 
 export default function JobApplicationsComp (props: Props) {
-  const { jobApplications = [], acceptDenyJobApplication } = props
+  const { jobApplications = [], acceptDenyJobApplication, deleteJobApplication, user} = props
 
   return (
     <Box gap="medium" fill="horizontal" align="center" pad="medium">
@@ -67,9 +83,11 @@ export default function JobApplicationsComp (props: Props) {
           {
             jobApplications.map(job => (
               <JobApplicationRow
-                {...job}
+                jobApplication={job}
+                user={user}
                 key={job.id || ''}
                 deny={() => acceptDenyJobApplication(job.id, 'DENIED')}
+                deleteJobApplication={() => deleteJobApplication(job.id as string)}
                 accept={() => acceptDenyJobApplication(job.id, 'ACCEPTED')}
               />
             ))

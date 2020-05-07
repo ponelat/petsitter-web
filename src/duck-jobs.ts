@@ -121,3 +121,10 @@ export function setCurrent(job: Job) : Message<Job> {
 export function setPage(jobsPage: JobsPage) : Message<JobsPage> {
   return { type: SET_PAGE, payload: jobsPage };
 }
+
+
+export function deleteJobApplication(jobId: string) : Dispatcher {
+  return async () => {
+    return Api.deleteJobApplication(jobId)
+  }
+}

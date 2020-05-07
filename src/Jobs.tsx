@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Table, TableBody, TableRow, TableCell, TableHeader} from 'grommet'
+import {Button, Table, TableBody, TableRow, TableCell, TableHeader, Box} from 'grommet'
 import { A, navigate } from 'hookrouter'
 import { hasPetSitterRole } from './duck-user'
 import { Job, User } from './types'
@@ -68,10 +68,10 @@ function JobRow({job, deleteJob, applyToJob, editJob, user} : JobRowProps) {
 
       <TableCell gap="small" direction="row" >
         {isOwner ? (
-          <>
+          <Box direction="row" gap="small">
             <Button label="Edit" onClick={() => navigate(`/jobs/${id}`)} />
             <Button label="Delete" color="status-critical" onClick={withConfirm(`Are you sure you want to delete job #${id}`, deleteJob, id)} />
-          </>
+          </Box>
         ) : null }
         {isPetSitter ? (
           <Button label="Apply" disabled={alreadyApplied} primary onClick={withConfirm("Are you sure you want to apply to this Job?", applyToJob, id)} />

@@ -67,7 +67,11 @@ export class PetSitterAPI {
   async getUser(id: string) : Promise<User> {
     return fetch(`${this.url}/users/${id}`, {
       headers: this.headers()
-    }).then((res: Response) => res.json())
+    }).then((res: Response) => {
+      if(res.status !== 200)
+        throw new Error(`Failed to fetch user ${id}`)
+      return res.json()
+    })
   }
 
   async getNextJobsPage() : Promise<JobsPage> {
@@ -103,6 +107,16 @@ export class PetSitterAPI {
     return fetch(`${this.url}/jobs/${jobId}/applications`, {
       headers: this.headers(),
     }).then((res: Response) => res.json())
+  }
+
+  async deleteJobApplication(id: string) : Promise<void> {
+    return fetch(`${this.url}/job-applications/${id}`, {
+      method: 'DELETE',
+      headers: this.headers()
+    }).then((res: Response) => {
+      if((res.status+'')[0] !== '2')
+        throw new Error(`Failed to delete Job Application ${id}`)
+    })
   }
 
   async createJob(job: Job) : Promise<Job> {
@@ -142,7 +156,7 @@ export class PetSitterAPI {
       body: JSON.stringify({
         status: "APPLYING"
       }),
-    }).then((res: Response) => res.json())
+    })
   }
 
 }
